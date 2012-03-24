@@ -18,7 +18,44 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Model
+
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick
+  
+  attach_many :photos
+end
+
+album = Album.new
+album.photos.new(photo: params[:file])
+album.save!
+album.photos.first.url
+
+album.photos.first.filename
+album.photos.first.content_type
+album.photos.first.width  # only images
+album.photos.first.height # only images
+```
+
+#### Custom classes
+
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick
+  
+  attach_many :photos do
+    field :tags, type: Array
+  end
+end
+
+album = Album.new
+album.photos.new(photo: params[:file], tags: ['ruby', 'guru'])
+album.save!
+album.photos.first.tags
+```
 
 ## Contributing
 
