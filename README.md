@@ -1,4 +1,4 @@
-# MediaMagick
+# MediaMagick [![Build Status](https://secure.travis-ci.org/nudesign/media_magick.png?branch=master)](http://travis-ci.org/nudesign/media_magick)
 
 TODO: Write a gem description
 
