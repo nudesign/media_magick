@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.version       = MediaMagick::VERSION
   
+  gem.add_dependency 'carrierwave', '~> 0.5.8'
   gem.add_dependency 'mongoid', '~> 2.4.0'
   
   gem.add_development_dependency 'rspec', '~> 2.9.0'

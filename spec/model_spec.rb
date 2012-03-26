@@ -36,6 +36,12 @@ describe MediaMagick::Model do
         
         @instance.files.new.should respond_to(:test_method)
       end
+      
+      describe '#photo' do
+        subject { @instance.photos.new.photo }
+        
+        it { should be_a_kind_of(CarrierWave::Uploader::Base) }
+      end
     end
   end
 end
