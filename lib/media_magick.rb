@@ -1,3 +1,4 @@
+require 'media_magick/model'
 require 'media_magick/version'
 
 module MediaMagick
