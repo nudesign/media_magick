@@ -8,13 +8,13 @@ module MediaMagick
     extend ActiveSupport::Concern
     
     module ClassMethods
-      def attach_many(name, &block)
+      def attach_many(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
           
           embedded_in :attachmentable, polymorphic: true
-          mount_uploader name.to_s.singularize, ImageUploader
+          mount_uploader name.to_s.singularize, ImageUploader unless options[:custom_uploader]
           
           class_eval(&block) if block_given?
         end

@@ -41,6 +41,24 @@ describe MediaMagick::Model do
         subject { @instance.photos.new.photo }
         
         it { should be_a_kind_of(CarrierWave::Uploader::Base) }
+        
+        describe 'custom_uploader' do
+          before(:all) do
+            class AmazonS3Uploader < CarrierWave::Uploader::Base
+              storage :file
+            end
+
+            @class.attach_many(:soundtrack, custom_uploader: true) do
+              mount_uploader(:music, AmazonS3Uploader)
+            end
+          end
+          
+          subject { @instance.soundtrack.new }
+          
+          it { should_not respond_to(:soundtrack) }
+          it { should respond_to(:music) }
+          it { subject.music.should be_a_instance_of(AmazonS3Uploader) }
+        end
       end
     end
   end
