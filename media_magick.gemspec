@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'carrierwave', '~> 0.5'
   gem.add_dependency 'mongoid', '~> 2.4.0'
   gem.add_dependency 'rails', '~> 3.2.0'
+  gem.add_dependency 'plupload-rails', '~> 1.0.6'
   
   gem.add_development_dependency 'bson_ext', '~> 1.6.0'
   gem.add_development_dependency 'rake',  '~> 0.9'
