@@ -65,23 +65,23 @@
         url:                  settings.url
       });
 
-      console.log('pqp 1');
       uploader.bind('Init', function(up, params) {
-        console.log('pqp 2');
         if ($('#' + settings.container + '-runtimeInfo').length > 0) $('#' + settings.container + '-runtimeInfo').text("Current runtime: " + params.runtime);
         if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
         
-        // $("a.remove").live('click', function() {
-        // 
-        //   $.get('/remove', {
-        //     model: $container.data('model'),
-        //     id: $container.data('id'),
-        //     relation: $container.data('relation'),
-        //     relation_id: $(this).parents('.attachment').data('id')
-        //   }, function(data) {
-        //     $(attachment).remove();
-        //   });
-        // });
+        $("a.remove").live('click', function() {
+        
+          var $attachment = $(this).parents('.attachment');
+          
+          $.get('/remove', {
+            model: $container.data('model'),
+            id: $container.data('id'),
+            relation: $container.data('relation'),
+            relation_id: $attachment.data('id')
+          }, function(data) {
+            $attachment.remove();
+          });
+        });
       });
 
       $('#' + settings.container + '-' + settings.upload_button).click(function(e) {
