@@ -65,9 +65,23 @@
         url:                  settings.url
       });
 
+      console.log('pqp 1');
       uploader.bind('Init', function(up, params) {
+        console.log('pqp 2');
         if ($('#' + settings.container + '-runtimeInfo').length > 0) $('#' + settings.container + '-runtimeInfo').text("Current runtime: " + params.runtime);
         if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
+        
+        // $("a.remove").live('click', function() {
+        // 
+        //   $.get('/remove', {
+        //     model: $container.data('model'),
+        //     id: $container.data('id'),
+        //     relation: $container.data('relation'),
+        //     relation_id: $(this).parents('.attachment').data('id')
+        //   }, function(data) {
+        //     $(attachment).remove();
+        //   });
+        // });
       });
 
       $('#' + settings.container + '-' + settings.upload_button).click(function(e) {
@@ -119,26 +133,3 @@
 
   };
 })(jQuery);
-
-$(document).ready(function () {
-  $(".attachmentUploader").pluploadIt();
-  
-  $("a.remove").live('click', function() {
-    
-    var attachment = $(this).parents('.attachment');
-    
-    var model       = $(this).parents('.attachmentUploader').data('model');
-    var id          = $(this).parents('.attachmentUploader').data('id');
-    var relation    = $(this).parents('.attachmentUploader').data('relation');
-    var relation_id = $(this).parents('.attachment').data("id");
-    
-    $.get('/remove', {
-      model: model,
-      id: id,
-      relation: relation,
-      relation_id: relation_id
-    }, function(data) {
-      $(attachment).remove();
-    });
-  });
-});

@@ -1,7 +1,11 @@
 module MediaMagickHelper
   def attachment_container(model, relation)
     content_tag :div, id: model.class.to_s.downcase << '-' << relation.to_s, class: 'attachmentUploader', data: { model: model.class.to_s.downcase, id: model.id.to_s, relation: relation.to_s } do
-      yield if block_given?
+      if block_given?
+        yield
+      else
+        return render :partial => "/upload", :locals => { :model => model, :relations => relation }
+      end
     end
   end
   
