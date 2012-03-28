@@ -1,4 +1,4 @@
-require 'rails'
+require 'rails/engine'
 
 module MediaMagick
   class Engine < Rails::Engine

@@ -1,8 +1,6 @@
-require 'rails/all'
+require 'action_controller/railtie'
 
 class AttachController < ActionController::Base
-  puts 'entrou'
-  
   def create
     klass = params[:model].classify.constantize.find(params[:id])
     file = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
