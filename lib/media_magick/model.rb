@@ -1,6 +1,6 @@
 require 'active_support/concern'
 require 'carrierwave'
-require 'media_magick/image_uploader'
+require 'media_magick/attachment_uploader'
 require 'mongoid'
 
 module MediaMagick
@@ -14,7 +14,7 @@ module MediaMagick
           extend CarrierWave::Mount
           
           embedded_in :attachmentable, polymorphic: true
-          mount_uploader name.to_s.singularize, ImageUploader unless options[:custom_uploader]
+          mount_uploader name.to_s.singularize, AttachmentUploader unless options[:custom_uploader]
           
           class_eval(&block) if block_given?
         end
