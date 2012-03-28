@@ -1,0 +1,17 @@
+<dl class="attachmentQueue">
+  <dt>file queue</dt>
+</dl>
+
+<div class="dropAttachments"></div>
+<a class="pickAttachments btn" href="javascript://">select files</a>
+<a class="uploadAttachments btn" href="javascript://">upload files</a>
+
+<ul class="loadedAttachments">
+  <% for attachment in model.send(relations).each do %>
+    <% if attachment.class::TYPE == :file %>
+      <%= render :partial => "/file", :locals => { :attachment => attachment } %>
+    <% elsif attachment.class::TYPE == :image %>
+      <%= render :partial => "/image", :locals => { :attachment => attachment } %>
+    <% end %>
+  <% end %>
+</ul>

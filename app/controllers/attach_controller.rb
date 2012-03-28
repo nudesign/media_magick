@@ -6,7 +6,7 @@ class AttachController < ActionController::Base
     file = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
     klass.save
     
-    render :partial => "#{params[:model].pluralize}/#{params[:relation]}", :object => file, :as => params[:relation].singularize
+    render :partial => "/#{file.class::TYPE}", :locals => {:attachment => file}
   end
   
   def destroy

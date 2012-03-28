@@ -4,12 +4,12 @@ module MediaMagickHelper
       if block_given?
         yield
       else
-        return render :partial => "/upload", :locals => { :model => model, :relations => relation }
+        render :partial => "/upload", :locals => { :model => model, :relations => relation }
       end
     end
   end
   
-  def attachment(tag, model, options = {})
+  def attachment_item(tag, model, options = {})
     default_options = options.merge(
       data: {
         id: model.id.to_s

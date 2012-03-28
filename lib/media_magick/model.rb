@@ -20,6 +20,7 @@ module MediaMagick
         end
         
         Object.const_set "#{self.name}#{name.capitalize}", klass
+        Object.const_set "TYPE", options[:type] || :image
         
         embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name.capitalize}")
       end
