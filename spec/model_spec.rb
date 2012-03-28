@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe MediaMagick::Model do
-  describe '.attach_many' do
+  describe '.attachs_many' do
     before(:all) do
       class Album
       end
@@ -11,7 +11,7 @@ describe MediaMagick::Model do
       @class = Album
       @class.send(:include, Mongoid::Document)
       @class.send(:include, MediaMagick::Model)
-      @class.attach_many(:photos)
+      @class.attachs_many(:photos)
       @instance = @class.new
     end
     
@@ -29,7 +29,7 @@ describe MediaMagick::Model do
       it { should be_an_instance_of(AlbumPhotos) }
       
       it 'should perform a block in the context of the class' do
-        @class.attach_many(:files) do
+        @class.attachs_many(:files) do
           def test_method
           end
         end
@@ -48,7 +48,7 @@ describe MediaMagick::Model do
               storage :file
             end
 
-            @class.attach_many(:soundtrack, custom_uploader: true) do
+            @class.attachs_many(:soundtrack, custom_uploader: true) do
               mount_uploader(:music, AmazonS3Uploader)
             end
           end
