@@ -8,7 +8,7 @@ module MediaMagick
     extend ActiveSupport::Concern
     
     module ClassMethods
-      def attach_many(name, options = {}, &block)
+      def attachs_many(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
