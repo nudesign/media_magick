@@ -1,4 +1,4 @@
 <li class="attachment" data-id="<%= attachment.to_param %>">
-  <%= attachment.inspect %>
+  <%= attachment.file.file.inspect unless attachment.file.file.nil? %>
   <a href="javascript://" class="remove">remove</a>
 </li>
