@@ -1,5 +1,5 @@
 require 'active_support/concern'
-require 'carrierwave'
+require 'carrierwave/mongoid'
 require 'media_magick/attachment_uploader'
 require 'mongoid'
 
