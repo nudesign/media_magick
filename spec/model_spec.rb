@@ -5,13 +5,7 @@ require 'spec_helper'
 describe MediaMagick::Model do
   describe '.attachs_many' do
     before(:all) do
-      class Album
-      end
-      
       @class = Album
-      @class.send(:include, Mongoid::Document)
-      @class.send(:include, MediaMagick::Model)
-      @class.attachs_many(:photos)
       @instance = @class.new
     end
     
