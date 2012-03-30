@@ -8,9 +8,9 @@
 
 <ul class="loadedAttachments">
   <% for attachment in model.send(relations).each do %>
-    <% if attachment.class::TYPE == :file %>
+    <% if attachment.class::TYPE.to_s == 'file' %>
       <%= render :partial => "/file", :locals => { :attachment => attachment } %>
-    <% elsif attachment.class::TYPE == :image %>
+    <% elsif attachment.class::TYPE.to_s == 'image' %>
       <%= render :partial => "/image", :locals => { :attachment => attachment } %>
     <% end %>
   <% end %>

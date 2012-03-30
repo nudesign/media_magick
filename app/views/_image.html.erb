@@ -1,6 +1,4 @@
 <li class="attachment" data-id="<%= attachment.to_param %>">
   <a href="javascript://" class="remove btn btn-danger">remove</a>
-  <%= attachment.photo.file.inspect %>
-  
-  <%#= image_tag(attachment.inspect.url) %>
+  <%= image_tag attachment.photo.thumb.url %>
 </li>
