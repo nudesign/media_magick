@@ -1,10 +1,12 @@
-<dl class="attachmentQueue">
-  <dt>file queue</dt>
-</dl>
+<div class="newAttachments">
+  <dl class="attachmentQueue">
+    <dt>file queue</dt>
+  </dl>
 
-<div class="dropAttachments"></div>
-<a class="pickAttachments btn" href="javascript://">select files</a>
-<a class="uploadAttachments btn" href="javascript://">upload files</a>
+  <div class="dropAttachments"></div>
+  <a class="pickAttachments btn" href="javascript://">select files</a>
+  <a class="uploadAttachments btn" href="javascript://">upload files</a>
+</div>
 
 <ul class="loadedAttachments">
   <% for attachment in model.send(relations).each do %>
