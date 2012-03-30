@@ -3,28 +3,6 @@ require 'carrierwave/mongoid'
 require 'media_magick/attachment_uploader'
 require 'mongoid'
 
-module CarrierWave
-  module Uploader
-    module Url
-      extend ActiveSupport::Concern
-      include CarrierWave::Uploader::Configuration
-
-      ##
-      # === Returns
-      #
-      # [String] the location where this file is accessible via a url
-      #
-      def url
-        if file.respond_to?(:url) and not file.url.blank?
-          file.url
-        elsif current_path
-          (base_path || "") + File.expand_path(current_path).gsub(File.expand_path(CarrierWave.root), '')
-        end
-      end
-    end
-  end
-end
-
 module MediaMagick
   module Model
     extend ActiveSupport::Concern
