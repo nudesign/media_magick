@@ -99,7 +99,7 @@
               file.name + ' (' + plupload.formatSize(file.size) + ') <span class="status"></span>' +
               '</dd>'
             ).find("dd:last").append(
-              $('<a href="javascript://" class="remove">[x]</a>').bind('click', function () {
+              $('<a href="javascript://" class="remove btn btn-mini">x</a>').bind('click', function () {
                 uploader.removeFile(file);
                 $(this).parent().remove();
               })
