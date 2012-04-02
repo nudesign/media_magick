@@ -80,8 +80,14 @@ module MediaMagick
           mount_uploader name.to_s.singularize, AttachmentUploader unless options[:custom_uploader]
 
           self.const_set "TYPE", options[:type] || :image
+          self.const_set "ATTACHMENT", name.to_s.singularize
           
           class_eval(&block) if block_given?
+
+          def method_missing(method, args = nil)
+            return self.send(self.class::ATTACHMENT).file.filename if method == :filename
+            self.send(self.class::ATTACHMENT).send(method)
+          end
         end
 
         Object.const_set "#{self.name}#{name.capitalize}", klass
