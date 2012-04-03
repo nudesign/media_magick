@@ -42,14 +42,11 @@ describe MediaMagick::Model do
               storage :file
             end
 
-            @class.attachs_many(:soundtrack, custom_uploader: true) do
-              mount_uploader(:music, AmazonS3Uploader)
-            end
+            @class.attachs_many :musics, uploader: AmazonS3Uploader
           end
           
-          subject { @instance.soundtrack.new }
+          subject { @instance.musics.new }
           
-          it { should_not respond_to(:soundtrack) }
           it { should respond_to(:music) }
           it { subject.music.should be_a_instance_of(AmazonS3Uploader) }
         end

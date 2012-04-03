@@ -13,7 +13,7 @@ module MediaMagick
           extend CarrierWave::Mount
 
           embedded_in :attachmentable, polymorphic: true
-          mount_uploader name.to_s.singularize, AttachmentUploader unless options[:custom_uploader]
+          mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
 
           self.const_set "TYPE", options[:type] || :image
           self.const_set "ATTACHMENT", name.to_s.singularize

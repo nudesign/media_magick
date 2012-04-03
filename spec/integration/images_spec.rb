@@ -35,4 +35,10 @@ describe 'Images' do
 
     album.reload.images.first.tags.should eq(['ruby', 'guru'])
   end
+
+  it 'should create version of images' do
+    album = Album.create
+    picture = album.pictures.create(picture: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"))
+    album.reload.pictures.first.thumb.url.should eq("/uploads/album_pictures/picture/#{picture.id}/thumb_nu.jpg")
+  end
 end

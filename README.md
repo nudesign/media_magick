@@ -51,6 +51,37 @@ album.photos.create(photo: params[:file], tags: ['ruby', 'guru'])
 album.reload.photos.first.tags #=> ['ruby', 'guru']
 ```
 
+#### Custom uploader
+
+``` ruby
+class PhotoUploader < CarrierWave::Uploader::Base
+  include CarrierWave::MiniMagick
+
+  storage :file
+
+  def store_dir
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
+
+  version :thumb do
+    process :resize_to_fit => [156, 156]
+  end
+end
+```
+
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attachs_many :photos, uploader: PhotoUploader
+end
+
+album = Album.create
+album.photos.create(photo: params[:file])
+album.reload.photos.first.thumb.url
+```
+
 ## Contributing
 
 1. Fork it
