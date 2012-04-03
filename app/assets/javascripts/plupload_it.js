@@ -67,7 +67,7 @@
 
       uploader.bind('Init', function(up, params) {
         if ($('#' + settings.container + '-runtimeInfo').length > 0) $('#' + settings.container + '-runtimeInfo').text("Current runtime: " + params.runtime);
-        if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
+        // if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
         
         $("a.remove").live('click', function() {
         
@@ -95,10 +95,10 @@
         uploader.bind('FilesAdded', function(up, files) {
           $.each(files, function(i, file) {
             $('#' + container + '-' + queue_element).append(
-              '<dd id="' + file.id + '" class="file">' +
+              '<li id="' + file.id + '" class="attachment">' +
               file.name + ' (' + plupload.formatSize(file.size) + ') <span class="status"></span>' +
-              '</dd>'
-            ).find("dd:last").append(
+              '</li>'
+            ).find("li:last").append(
               $('<a href="javascript://" class="remove btn btn-mini">x</a>').bind('click', function () {
                 uploader.removeFile(file);
                 $(this).parent().remove();
@@ -114,10 +114,10 @@
         });
 
         uploader.bind('Error', function(up, err) {
-          $('#' + container + '-' + queue_element).append("<dd class='attachment error'>Error: " + err.code +
+          $('#' + container + '-' + queue_element).append("<li class='attachment error'>Error: " + err.code +
           ", Message: " + err.message +
           (err.file ? ", File: " + err.file.name : "") +
-          "</dd>");
+          "</li>");
 
           up.refresh(); // Reposition Flash/Silverlight
         });
