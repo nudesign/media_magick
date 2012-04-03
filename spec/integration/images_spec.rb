@@ -28,4 +28,11 @@ describe 'Images' do
 
     album.reload.photos.first.filename.should eq('nu.jpg')
   end
+
+  it 'should add fields on relation class' do
+    album = Album.create
+    album.images.create(image: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"), tags: ['ruby', 'guru'])
+
+    album.reload.images.first.tags.should eq(['ruby', 'guru'])
+  end
 end
