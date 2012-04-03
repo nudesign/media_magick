@@ -1,6 +1,6 @@
 # MediaMagick [![Build Status](https://secure.travis-ci.org/nudesign/media_magick.png?branch=master)](http://travis-ci.org/nudesign/media_magick) [![Build Status](https://gemnasium.com/nudesign/media_magick.png?travis)](http://gemnasium.com/nudesign/media_magick)
 
-TODO: Write a gem description
+MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.
 
 ## Installation
 
@@ -23,20 +23,15 @@ Or install it yourself as:
 ``` ruby
 class Album
   include Mongoid::Document
-  include MediaMagick
-  
-  attach_many :photos
+  include MediaMagick::Model
+
+  attachs_many :photos
 end
 
-album = Album.new
-album.photos.new(photo: params[:file])
-album.save!
-album.photos.first.url
-
-album.photos.first.filename
-album.photos.first.content_type
-album.photos.first.width  # only images
-album.photos.first.height # only images
+album = Album.create
+album.photos.create(photo: params[:file])
+album.reload.photos.first.url
+album.reload.photos.first.filename
 ```
 
 #### Custom classes
@@ -44,17 +39,16 @@ album.photos.first.height # only images
 ``` ruby
 class Album
   include Mongoid::Document
-  include MediaMagick
-  
-  attach_many :photos do
+  include MediaMagick::Model
+
+  attachs_many :photos do
     field :tags, type: Array
   end
 end
 
-album = Album.new
-album.photos.new(photo: params[:file], tags: ['ruby', 'guru'])
-album.save!
-album.photos.first.tags
+album = Album.create
+album.photos.create(photo: params[:file], tags: ['ruby', 'guru'])
+album.reload.photos.first.tags #=> ['ruby', 'guru']
 ```
 
 ## Contributing
