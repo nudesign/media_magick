@@ -6,3 +6,4 @@ spec/dummy/tmp/
 spec/dummy/public/uploads
 spec/dummy/.sass-cache
 uploads
+.DS_Store
