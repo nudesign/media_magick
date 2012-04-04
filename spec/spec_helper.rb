@@ -26,8 +26,6 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
   
-  Mongoid.load!("#{File.expand_path('..', __FILE__)}/support/config/mongoid.yml")
-  
   config.before :suite do
     Mongoid.configure do |config|
       config.master = Mongo::Connection.new.db('media_magick')
