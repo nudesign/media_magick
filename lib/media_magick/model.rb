@@ -29,9 +29,10 @@ module MediaMagick
           end
         end
 
-        Object.const_set "#{self.name}#{name.capitalize}", klass
+        name_camelcase = name.to_s.camelcase
+        Object.const_set "#{self.name}#{name_camelcase}", klass
 
-        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name.capitalize}")
+        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
       end
     end
   end

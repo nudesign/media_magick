@@ -4,6 +4,7 @@ class Album
 
   attachs_many :photos
   attachs_many :files
+  attachs_many :compound_name_files
 
   attachs_many :images do
     field :tags, type: Array
