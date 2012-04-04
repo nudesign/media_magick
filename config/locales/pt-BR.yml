@@ -1,0 +1,5 @@
+pt-BR:
+  media_magick:
+    confirm_removal: "têm certeza que deseja apagar este arquivo?"
+    select: "selecionar arquivos"
+    upload: "enviar arquivos"
