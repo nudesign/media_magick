@@ -7,14 +7,14 @@ describe 'Images' do
   it 'should save the image on mongoid document' do
     product = Product.create
     product.images.create(image: image_file)
-    
+
     product.reload.images.first.filename.should eq('nu.jpg')
   end
-  
+
   it 'should save the file on mongoid document' do
     product = Product.create
     file = product.files.create(file: non_image_file)
-    
+
     product.reload.files.first.url.should eq("/uploads/product_files/file/#{file.id}/nu.txt")
   end
 
@@ -24,7 +24,7 @@ describe 'Images' do
 
     image.url.should eq("/uploads/product_images/image/#{image.id}/nu.jpg")
   end
-  
+
   it 'should access filename from relation class' do
     product = Product.create
     product.images.create(image: image_file)

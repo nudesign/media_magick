@@ -5,13 +5,13 @@ require 'media_magick/attachment_uploader'
 module MediaMagick
   module Model
     extend ActiveSupport::Concern
-    
+
     module ClassMethods
       def attachs_many(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
-          
+
           field :priority, type: Integer, default: 0
           default_scope asc(:priority)
 
@@ -20,7 +20,7 @@ module MediaMagick
 
           self.const_set "TYPE", options[:type] || :image
           self.const_set "ATTACHMENT", name.to_s.singularize
-          
+
           class_eval(&block) if block_given?
 
           def method_missing(method, args = nil)

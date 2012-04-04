@@ -4,10 +4,10 @@ class Album
 
   attachs_many :photos
   attachs_many :files
-  
+
   attachs_many :images do
     field :tags, type: Array
   end
-  
+
   attachs_many :pictures, uploader: PictureUploader
 end
