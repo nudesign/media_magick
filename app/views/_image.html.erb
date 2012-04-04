@@ -1,4 +1,4 @@
-<li class="attachment" data-id="<%= attachment.to_param %>">
+<li class="attachment" id="<%= attachment.to_param %>" data-id="<%= attachment.to_param %>">
   <%= image_tag attachment.url, alt: attachment.filename %>
   <%= link_to t('media_magick.remove'), "javascript://", method: "delete", confirm: t('media_magick.confirm_removal'), class: "remove btn btn-mini btn-danger" %>
 </li>

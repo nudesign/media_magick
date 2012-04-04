@@ -31,11 +31,28 @@ describe MediaMagick::Model do
         @instance.files.new.should respond_to(:test_method)
       end
       
+      it "should be ordered by ascending priority" do
+        @instance = @class.new
+        
+        photo2 = @instance.photos.create(priority: 1)
+        photo1 = @instance.photos.create(priority: 0)
+        
+        @instance.reload.photos.should == [photo1, photo2]
+      end
+      
+      it "should respond to priority" do
+        subject.fields.include?(:priority)
+      end
+
+      it "should have priority 0 as default" do
+        subject.priority.should be(0)
+      end
+
       describe '#photo' do
         subject { @instance.photos.new.photo }
         
         it { should be_a_kind_of(CarrierWave::Uploader::Base) }
-        
+
         describe 'custom_uploader' do
           before(:all) do
             class AmazonS3Uploader < CarrierWave::Uploader::Base
@@ -50,6 +67,7 @@ describe MediaMagick::Model do
           it { should respond_to(:music) }
           it { subject.music.should be_a_instance_of(AmazonS3Uploader) }
         end
+  
       end
     end
   end

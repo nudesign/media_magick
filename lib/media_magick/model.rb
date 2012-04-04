@@ -11,6 +11,9 @@ module MediaMagick
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
+          
+          field :priority, type: Integer, default: 0
+          default_scope asc(:priority)
 
           embedded_in :attachmentable, polymorphic: true
           mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)

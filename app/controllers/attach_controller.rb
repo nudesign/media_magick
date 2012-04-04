@@ -14,4 +14,19 @@ class AttachController < ActionController::Base
     attachment.destroy
     render nothing: true
   end
+  
+  def update_priority
+    attachments = params[:elements]
+    attachments = attachments.split(',') unless attachments.kind_of?(Array)
+    
+    parent = params[:model].classify.constantize.find(params[:model_id])
+    
+    attachments.each_with_index do |id, i|
+      attachment = parent.send(params[:relation]).find(id)
+      attachment.priority = i
+      attachment.save
+    end
+    
+    render :text => params[:attachments]
+  end
 end
