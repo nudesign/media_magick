@@ -3,3 +3,6 @@ pt-BR:
     confirm_removal: "têm certeza que deseja apagar este arquivo?"
     select: "selecionar arquivos"
     upload: "enviar arquivos"
+    recreate_versions:
+      ok: "imagens recriadas com sucesso!"
+      error: "ocorreu um erro ao recriar as imagens…"
