@@ -45,4 +45,14 @@ describe AttachController, :type => :controller do
       photo2.reload.priority.should eq(1)
     end  
   end
+
+  describe "recriate versions" do
+    it "recriate images versions" do
+      album = Album.create
+      
+      put :recreate_versions, { model: 'album', model_id: album.id.to_s, relation: 'photos' }
+
+      response.status.should be(200)
+    end  
+  end
 end
