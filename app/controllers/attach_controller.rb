@@ -35,7 +35,7 @@ class AttachController < ActionController::Base
     
     errors = []
     parent.send(params[:relation].pluralize).each do |attachment|
-      errors << attachment if attachment.recreate_versions!
+      errors << attachment unless attachment.recreate_versions!
     end
     
     if errors.empty?
