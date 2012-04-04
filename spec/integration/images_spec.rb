@@ -1,44 +1,47 @@
 require 'spec_helper'
 
 describe 'Images' do
+  let(:image_file)     { File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg") }
+  let(:non_image_file) { File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.txt") }
+
   it 'should save the image on mongoid document' do
-    album = Album.create
-    album.photos.create(photo: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"))
-    
-    album.reload.photos.first.photo.file.filename.should eq('nu.jpg')
+    product = Product.create
+    product.images.create(image: image_file)
+
+    product.reload.images.first.filename.should eq('nu.jpg')
   end
-  
+
   it 'should save the file on mongoid document' do
-    album = Album.create
-    file = album.files.create(file: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.txt"))
-    
-    album.reload.files.first.file.url.should eq("/uploads/album_files/file/#{file.id}/nu.txt")
+    product = Product.create
+    file = product.files.create(file: non_image_file)
+
+    product.reload.files.first.url.should eq("/uploads/product_files/file/#{file.id}/nu.txt")
   end
 
   it 'should access Uploader methods from relation class' do
-    album = Album.create
-    photo = album.photos.create(photo: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"))
+    product = Product.create
+    image = product.images.create(image: image_file)
 
-    photo.url.should eq("/uploads/album_photos/photo/#{photo.id}/nu.jpg")
+    image.url.should eq("/uploads/product_images/image/#{image.id}/nu.jpg")
   end
-  
-  it 'should access filename from relation class' do
-    album = Album.create
-    photo = album.photos.create(photo: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"))
 
-    album.reload.photos.first.filename.should eq('nu.jpg')
+  it 'should access filename from relation class' do
+    product = Product.create
+    product.images.create(image: image_file)
+
+    product.reload.images.first.filename.should eq('nu.jpg')
   end
 
   it 'should add fields on relation class' do
-    album = Album.create
-    album.images.create(image: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"), tags: ['ruby', 'guru'])
+    product = Product.create
+    product.images.create(image: image_file, tags: ['ruby', 'guru'])
 
-    album.reload.images.first.tags.should eq(['ruby', 'guru'])
+    product.reload.images.first.tags.should eq(['ruby', 'guru'])
   end
 
   it 'should create version of images' do
-    album = Album.create
-    picture = album.pictures.create(picture: File.new("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg"))
-    album.reload.pictures.first.thumb.url.should eq("/uploads/album_pictures/picture/#{picture.id}/thumb_nu.jpg")
+    product = Product.create
+    image = product.images.create(image: image_file)
+    product.reload.images.first.thumb.url.should eq("/uploads/product_images/image/#{image.id}/thumb_nu.jpg")
   end
 end

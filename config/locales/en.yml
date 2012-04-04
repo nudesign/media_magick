@@ -1,0 +1,5 @@
+en:
+  media_magick:
+    confirm_removal: "are you sure you want to delete this file?"
+    select: "select files"
+    upload: "upload files"

@@ -8,38 +8,38 @@ describe MediaMagick::Model do
       @class = Album
       @instance = @class.new
     end
-    
+
     it 'should create a "embeds_many" relationship with photos' do
       @class.relations['photos'].relation.should eq(Mongoid::Relations::Embedded::Many)
     end
-    
+
     it 'should create a relationship with photos through AlbumPhotos model' do
       @class.relations['photos'].class_name.should eq('AlbumPhotos')
     end
-    
+
     describe '#photos' do
       subject { @instance.photos.new }
-      
+
       it { should be_an_instance_of(AlbumPhotos) }
-      
+
       it 'should perform a block in the context of the class' do
         @class.attachs_many(:files) do
           def test_method
           end
         end
-        
+
         @instance.files.new.should respond_to(:test_method)
       end
-      
+
       it "should be ordered by ascending priority" do
         @instance = @class.new
-        
+
         photo2 = @instance.photos.create(priority: 1)
         photo1 = @instance.photos.create(priority: 0)
-        
+
         @instance.reload.photos.should == [photo1, photo2]
       end
-      
+
       it "should respond to priority" do
         subject.fields.include?(:priority)
       end
@@ -50,7 +50,7 @@ describe MediaMagick::Model do
 
       describe '#photo' do
         subject { @instance.photos.new.photo }
-        
+
         it { should be_a_kind_of(CarrierWave::Uploader::Base) }
 
         describe 'custom_uploader' do
@@ -61,13 +61,12 @@ describe MediaMagick::Model do
 
             @class.attachs_many :musics, uploader: AmazonS3Uploader
           end
-          
+
           subject { @instance.musics.new }
-          
+
           it { should respond_to(:music) }
           it { subject.music.should be_a_instance_of(AmazonS3Uploader) }
         end
-  
       end
     end
   end
