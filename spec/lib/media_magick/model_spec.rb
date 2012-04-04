@@ -17,6 +17,13 @@ describe MediaMagick::Model do
       @class.relations['photos'].class_name.should eq('AlbumPhotos')
     end
 
+    describe "naming relations" do
+      it "should transform related compound name classes to camel case" do
+        @instance.should respond_to(:compound_name_files)
+        @instance.compound_name_files.build.class.should eq(AlbumCompoundNameFiles)
+      end
+    end
+
     describe '#photos' do
       subject { @instance.photos.new }
 
