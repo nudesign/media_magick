@@ -3,3 +3,9 @@ rvm:
   - 1.9.2
   - 1.9.3
   - ruby-head
+notifications:
+  email:
+    - contato@lucasrenan.com
+    - rbrancher@gmail.com
+    - tiagogodinho3@gmail.com
+    - stefano@heavenstudio.com.br
