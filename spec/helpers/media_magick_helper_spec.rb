@@ -7,7 +7,7 @@ describe MediaMagickHelper do
       album.stub(id: '12345678')
 
       helper.attachment_container(album, :photos) do
-      end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="album" data-relation="photos" id="album-photos"></div>')
+      end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="Album" data-relation="photos" id="album-photos"></div>')
     end
 
     it 'should renders default partial if block is not given' do

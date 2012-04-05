@@ -2,7 +2,7 @@ require 'action_controller/railtie'
 
 class AttachController < ActionController::Base
   def create
-    klass = params[:model].classify.constantize.find(params[:id])
+    klass = params[:model].constantize.find(params[:id])
     attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
     klass.save
 
@@ -19,7 +19,7 @@ class AttachController < ActionController::Base
     attachments = params[:elements]
     attachments = attachments.split(',') unless attachments.kind_of?(Array)
 
-    parent = params[:model].classify.constantize.find(params[:model_id])
+    parent = params[:model].constantize.find(params[:model_id])
 
     attachments.each_with_index do |id, i|
       attachment = parent.send(params[:relation]).find(id)
