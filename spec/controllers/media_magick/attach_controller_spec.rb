@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AttachController do
+describe MediaMagick::AttachController do
   render_views
 
   describe "POST create" do
@@ -9,7 +9,7 @@ describe AttachController do
         album = Album.create
 
         expect {
-          post :create, { model: 'Album', id: album.id, relation: 'photos', file: fixture_file_upload("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg") }
+          post :create, { model: 'Album', id: album.id, relation: 'photos', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
         }.to change { album.reload.photos.count }.by(1)
 
         response.should render_template('_image')
@@ -22,7 +22,7 @@ describe AttachController do
   describe "DELETE destroy" do
     it "destroys the requested photo" do
       album = Album.create
-      photo = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg")))
+      photo = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
 
       expect {
         delete :destroy, { model: 'Album', id: album.id, relation: 'photos', relation_id: photo.id }
@@ -33,8 +33,8 @@ describe AttachController do
   describe "update priority" do
     it "updates the attachments priority" do
       album = Album.create
-      photo1 = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg")))
-      photo2 = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../..',  __FILE__)}/support/fixtures/nu.jpg")))
+      photo1 = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
+      photo2 = album.photos.create(photo: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
 
       id1 = photo1.id.to_s
       id2 = photo2.id.to_s
