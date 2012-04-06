@@ -32,17 +32,17 @@ class AttachController < ActionController::Base
 
   def recreate_versions
     parent = params[:model].classify.constantize.find(params[:model_id])
-    
+
     errors = []
     parent.send(params[:relation].pluralize).each do |attachment|
       errors << attachment unless attachment.recreate_versions!
     end
-    
+
     if errors.empty?
       redirect_to :back, notice: t('media_magick.recreate_versions.ok')
     else
       redirect_to :back, notice: t('media_magick.recreate_versions.error')
     end
   end
-  
+
 end

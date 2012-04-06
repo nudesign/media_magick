@@ -54,7 +54,6 @@ describe AttachController, :type => :controller do
       put :recreate_versions, { model: 'album', model_id: album.id.to_s, relation: 'photos' }
 
       response.status.should be(302)
-    end  
+    end
   end
 end
-
