@@ -30,12 +30,12 @@ describe MediaMagick::Model do
       it { should be_an_instance_of(AlbumPhotos) }
 
       it 'should perform a block in the context of the class' do
-        @class.attachs_many(:files) do
+        @class.attachs_many(:documents) do
           def test_method
           end
         end
 
-        @instance.files.new.should respond_to(:test_method)
+        @instance.documents.new.should respond_to(:test_method)
       end
 
       it "should be ordered by ascending priority" do
