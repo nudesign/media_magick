@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AttachController, :type => :controller do
+describe AttachController do
   render_views
 
   describe "POST create" do
