@@ -25,7 +25,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos
+  attachs_many :photos, type: 'image'
 end
 
 album = Album.create
@@ -41,7 +41,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos do
+  attachs_many :photos, type: 'image' do
     field :tags, type: Array
   end
 end
@@ -74,7 +74,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos, uploader: PhotoUploader
+  attachs_many :photos, type: 'image', uploader: PhotoUploader
 end
 
 album = Album.create
