@@ -15,7 +15,12 @@ module MediaMagick
           field :priority, type: Integer, default: 0
           default_scope asc(:priority)
 
-          embedded_in :attachmentable, polymorphic: true
+          if options[:relation] == :referenced
+            belongs_to :attachmentable, polymorphic: true
+          else
+            embedded_in :attachmentable, polymorphic: true
+          end
+
           mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
 
           self.const_set "TYPE", options[:type] || :image
@@ -32,7 +37,13 @@ module MediaMagick
         name_camelcase = name.to_s.camelcase
         Object.const_set "#{self.name}#{name_camelcase}", klass
 
-        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
+        if options[:relation] == :referenced
+          klass.collection_name = "#{self.name}_#{name.to_s.camelcase}".parameterize
+
+          has_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
+        else
+          embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
+        end
       end
     end
   end

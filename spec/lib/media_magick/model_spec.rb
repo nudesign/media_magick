@@ -9,6 +9,10 @@ describe MediaMagick::Model do
       @instance = @class.new
     end
 
+    it 'should create a "has_many" relationship with photos' do
+      @class.relations['files'].relation.should eq(Mongoid::Relations::Referenced::Many)
+    end
+
     it 'should create a "embeds_many" relationship with photos' do
       @class.relations['photos'].relation.should eq(Mongoid::Relations::Embedded::Many)
     end
@@ -39,7 +43,7 @@ describe MediaMagick::Model do
       end
 
       it "should be ordered by ascending priority" do
-        @instance = @class.new
+        @instance = @class.create
 
         photo2 = @instance.photos.create(priority: 1)
         photo1 = @instance.photos.create(priority: 0)

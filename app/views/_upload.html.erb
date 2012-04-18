@@ -7,7 +7,7 @@
   <a class="uploadAttachments btn" href="javascript://"><%= t('media_magick.upload') %></a>
 </div>
 <ul class="loadedAttachments <%= loadedAttachments[:class] %>">
-  <% for attachment in model.send(relations).each do %>
+  <% model.send(relations).each do |attachment| %>
     <% if partial %>
       <%= render partial, attachment: attachment %>
     <% elsif attachment.class::TYPE.to_s == 'file' %>
