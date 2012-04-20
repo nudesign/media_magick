@@ -13,7 +13,7 @@
     <% elsif attachment.class::TYPE.to_s == 'file' %>
       <%= render :partial => "/file", :locals => { :attachment => attachment } %>
     <% elsif attachment.class::TYPE.to_s == 'image' %>
-      <%= render :partial => "/image", :locals => { :attachment => attachment } %>
+      <%= render :partial => "/image", :locals => { :attachment => attachment, :model => nil, :relation => nil } %>
     <% end %>
   <% end %>
 </ul>

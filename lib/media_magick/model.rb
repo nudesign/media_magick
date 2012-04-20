@@ -41,6 +41,16 @@ module MediaMagick
           klass.collection_name = "#{self.name}_#{name.to_s.camelcase}".parameterize
 
           has_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
+
+          field "#{name.to_s.singularize}_ids", type: Array
+
+          before_create do
+            ids = self.send("#{name.to_s.singularize}_ids") || []
+
+            ids.each do |id|
+              "#{self.class}#{name_camelcase}".constantize.find(id).update_attributes(attachmentable: self)
+            end
+          end
         else
           embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
         end

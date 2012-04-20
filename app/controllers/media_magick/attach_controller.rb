@@ -3,13 +3,24 @@ require 'action_controller/railtie'
 module MediaMagick
   class AttachController < ActionController::Base
     def create
-      klass = params[:model].constantize.find(params[:id])
-      attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
-      klass.save
+      if params[:model].constantize.relations[params[:relation]][:relation] == Mongoid::Relations::Referenced::Many
+        klass = params[:model].constantize.where(id: params[:id])
+        klass = klass.empty? ? nil : klass.first
+
+        if klass
+          attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+        else
+          attachment = params[:model].constantize.relations[params[:relation]][:class_name].constantize.create!(params[:relation].singularize => params[:file])
+        end
+      else
+        klass = params[:model].constantize.find(params[:id])
+        attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+        klass.save
+      end
 
       partial = params[:partial] || "/#{attachment.class::TYPE}"
 
-      render :partial => partial, :locals => {:attachment => attachment}
+      render :partial => partial, :locals => {:model => params[:model], :relation => params[:relation], :attachment => attachment}
     end
 
     def destroy
