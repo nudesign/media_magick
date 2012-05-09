@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['contato@lucasrenan.com', 'rbrancher@gmail.com', 'tiagogodinho3@gmail.com']
   gem.description   = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic.}
   gem.summary       = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.}
-  gem.homepage      = ''
+  gem.homepage      = 'https://github.com/nudesign/media_magick'
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -23,6 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'bson_ext',    '~> 1.6.0'
   gem.add_development_dependency 'mini_magick', '~> 3.4'
   gem.add_development_dependency 'rake',        '~> 0.9'
-  gem.add_development_dependency 'rspec-rails', '~> 2.9.0'
+  gem.add_development_dependency 'rspec-rails', '~> 2.10.1'
   gem.add_development_dependency 'simplecov',   '~> 0.6.1'
 end
