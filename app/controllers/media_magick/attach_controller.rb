@@ -7,7 +7,9 @@ module MediaMagick
       attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
       klass.save
 
-      render :partial => "/#{attachment.class::TYPE}", :locals => {:attachment => attachment}
+      partial = params[:partial] || "/#{attachment.class::TYPE}"
+
+      render :partial => partial, :locals => {:attachment => attachment}
     end
 
     def destroy

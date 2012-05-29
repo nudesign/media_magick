@@ -16,6 +16,12 @@ describe MediaMagick::AttachController do
 
         response.body.should =~ /nu.jpg/m
       end
+
+      it "render a personalized partial" do
+        album = Album.create
+        post :create, { model: 'Album', id: album.id, relation: 'photos', partial: 'albums/photo', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
+        response.should render_template('albums/_photo')
+      end
     end
   end
 

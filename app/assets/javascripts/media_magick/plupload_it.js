@@ -56,7 +56,8 @@
         multipart_params: {
           id:       $container.data('id'),
           relation: $container.data('relation'),
-          model:    $container.data('model')
+          model:    $container.data('model'),
+          partial:  $container.data('partial')
         },
         resize:               settings.resize,
         runtimes:             settings.runtimes,

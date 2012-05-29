@@ -11,6 +11,14 @@ describe MediaMagick do
         end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="Album" data-relation="photos" id="album-photos"></div>')
       end
 
+      it 'should include partial option on data attributes' do
+        album = Album.new
+        album.stub(id: '12345678')
+
+        helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo') do
+        end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="Album" data-partial="albums/photo" data-relation="photos" id="album-photos"></div>')
+      end
+
       it 'should renders default partial if block is not given' do
         photo = AlbumPhotos.new
         photo.stub(filename: 'photo.jpg', url: 'url/photo.jpg')
