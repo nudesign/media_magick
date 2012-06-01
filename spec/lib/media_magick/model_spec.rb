@@ -8,16 +8,16 @@ describe MediaMagick::Model do
       @klass = User
     end
 
-    it "should includes .attachs_many" do      
-      @klass.should respond_to(:attachs_many)
+    it "should includes .attaches_many" do      
+      @klass.should respond_to(:attaches_many)
     end
 
-    it "should includes .attachs_one" do      
-      @klass.should respond_to(:attachs_one)
+    it "should includes .attaches_one" do      
+      @klass.should respond_to(:attaches_one)
     end
   end
 
-  describe '.attachs_many' do
+  describe '.attaches_many' do
     before(:all) do
       @klass = Album
       @instance = @klass.new
@@ -48,7 +48,7 @@ describe MediaMagick::Model do
       it { should be_an_instance_of(AlbumPhotos) }
 
       it 'should perform a block in the context of the class' do
-        @klass.attachs_many(:documents) do
+        @klass.attaches_many(:documents) do
           def test_method; end
         end
 
@@ -83,7 +83,7 @@ describe MediaMagick::Model do
               storage :file
             end
 
-            @klass.attachs_many :musics, uploader: AmazonS3Uploader
+            @klass.attaches_many :musics, uploader: AmazonS3Uploader
           end
 
           subject { @instance.musics.new }
@@ -95,7 +95,7 @@ describe MediaMagick::Model do
     end
   end
 
-  describe '.attachs_one' do
+  describe '.attaches_one' do
     before(:all) do
       @klass    = User
       @instance = @klass.new
@@ -122,7 +122,7 @@ describe MediaMagick::Model do
       it { should be_an_instance_of(UserPhoto) }
 
       it 'should perform a block in the context of the class' do
-        @klass.attachs_one(:image) do
+        @klass.attaches_one(:image) do
           def test_method; end
         end
                 

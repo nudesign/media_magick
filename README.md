@@ -56,7 +56,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos, type: 'image'
+  attaches_many :photos, type: 'image'
 end
 
 album = Album.create
@@ -65,14 +65,14 @@ album.reload.photos.first.url
 album.reload.photos.first.filename
 ```
 
-#### Attachs One
+#### attaches One
 
 ``` ruby
 class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_one :photo, type: 'image'
+  attaches_one :photo, type: 'image'
 end
 
 album = Album.create
@@ -88,7 +88,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos, type: 'image' do
+  attaches_many :photos, type: 'image' do
     field :tags, type: Array
   end
 end
@@ -123,7 +123,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos, type: 'image', uploader: PhotoUploader
+  attaches_many :photos, type: 'image', uploader: PhotoUploader
 end
 
 album = Album.create

@@ -4,13 +4,13 @@ class Album
 
   embeds_many :tracks
 
-  attachs_many :photos
-  attachs_many :files, :relation => :referenced
-  attachs_many :compound_name_files
+  attaches_many :photos
+  attaches_many :files
+  attaches_many :compound_name_files
 
-  attachs_many :images do
+  attaches_many :images do
     field :tags, type: Array
   end
 
-  attachs_many :pictures, uploader: PictureUploader
+  attaches_many :pictures, uploader: PictureUploader
 end

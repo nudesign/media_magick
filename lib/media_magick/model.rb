@@ -8,6 +8,10 @@ module MediaMagick
 
     module ClassMethods
       def attachs_many(name, options = {}, &block)
+        attaches_many(name, options = {}, &block)
+      end
+
+      def attaches_many(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
@@ -56,7 +60,7 @@ module MediaMagick
         end
       end
 
-      def attachs_one(name, options = {}, &block)
+      def attaches_one(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
 
