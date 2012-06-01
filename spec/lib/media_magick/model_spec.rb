@@ -3,10 +3,24 @@
 require 'spec_helper'
 
 describe MediaMagick::Model do
+  describe 'including class methods' do
+    before(:all) do
+      @klass = User
+    end
+
+    it "should includes .attachs_many" do      
+      @klass.should respond_to(:attachs_many)
+    end
+
+    it "should includes .attachs_one" do      
+      @klass.should respond_to(:attachs_one)
+    end
+  end
+
   describe '.attachs_many' do
     before(:all) do
-      @class = Album
-      @instance = @class.new
+      @klass = Album
+      @instance = @klass.new
     end
 
     it 'should create a "has_many" relationship with photos' do
@@ -14,11 +28,11 @@ describe MediaMagick::Model do
     end
 
     it 'should create a "embeds_many" relationship with photos' do
-      @class.relations['photos'].relation.should eq(Mongoid::Relations::Embedded::Many)
+      @klass.relations['photos'].relation.should eq(Mongoid::Relations::Embedded::Many)
     end
 
     it 'should create a relationship with photos through AlbumPhotos model' do
-      @class.relations['photos'].class_name.should eq('AlbumPhotos')
+      @klass.relations['photos'].class_name.should eq('AlbumPhotos')
     end
 
     describe "naming relations" do
@@ -34,16 +48,15 @@ describe MediaMagick::Model do
       it { should be_an_instance_of(AlbumPhotos) }
 
       it 'should perform a block in the context of the class' do
-        @class.attachs_many(:documents) do
-          def test_method
-          end
+        @klass.attachs_many(:documents) do
+          def test_method; end
         end
 
         @instance.documents.new.should respond_to(:test_method)
       end
 
       it "should be ordered by ascending priority" do
-        @instance = @class.create
+        @instance = @klass.new
 
         photo2 = @instance.photos.create(priority: 1)
         photo1 = @instance.photos.create(priority: 0)
@@ -70,7 +83,7 @@ describe MediaMagick::Model do
               storage :file
             end
 
-            @class.attachs_many :musics, uploader: AmazonS3Uploader
+            @klass.attachs_many :musics, uploader: AmazonS3Uploader
           end
 
           subject { @instance.musics.new }
@@ -81,4 +94,42 @@ describe MediaMagick::Model do
       end
     end
   end
+
+  describe '.attachs_one' do
+    before(:all) do
+      @klass    = User
+      @instance = @klass.new
+    end
+
+    it 'should create an embedded model' do
+      @klass.relations['photo'].class_name.should eq('UserPhoto')
+    end
+
+    it 'should create a "embeds_one" relation' do
+      @klass.relations['photo'].relation.should eq(Mongoid::Relations::Embedded::One)
+    end
+
+    describe "naming relations" do
+      it "should transform related compound name classe to camel case" do
+        @instance.should respond_to(:compound_name_file)
+        @instance.build_compound_name_file.class.should eq(UserCompoundNameFile)
+      end
+    end
+
+    describe "related method" do
+      subject { @instance.build_photo }
+
+      it { should be_an_instance_of(UserPhoto) }
+
+      it 'should perform a block in the context of the class' do
+        @klass.attachs_one(:image) do
+          def test_method; end
+        end
+                
+        @instance.build_image.should respond_to(:test_method) 
+      end
+    end
+
+  end
+
 end

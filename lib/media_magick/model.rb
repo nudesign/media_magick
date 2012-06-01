@@ -35,7 +35,7 @@ module MediaMagick
         end
 
         name_camelcase = name.to_s.camelcase
-        Object.const_set "#{self.name}#{name_camelcase}", klass
+        Object.const_set "#{self}#{name_camelcase}", klass
 
         if options[:relation] == :referenced
           klass.collection_name = "#{self.name}_#{name.to_s.camelcase}".parameterize
@@ -54,6 +54,21 @@ module MediaMagick
         else
           embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
         end
+      end
+
+      def attachs_one(name, options = {}, &block)
+        klass = Class.new do
+          include Mongoid::Document
+
+          embedded_in name
+
+          class_eval(&block) if block_given?
+        end
+
+        name_camelcase = name.to_s.camelcase
+        Object.const_set "#{self}#{name_camelcase}", klass
+
+        embeds_one name, class_name: "#{self}#{name_camelcase}"
       end
     end
   end

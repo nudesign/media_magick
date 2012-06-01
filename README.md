@@ -65,6 +65,22 @@ album.reload.photos.first.url
 album.reload.photos.first.filename
 ```
 
+#### Attachs One
+
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attachs_one :photo, type: 'image'
+end
+
+album = Album.create
+album.photo.create(photo: params[:file])
+album.reload.photo.url
+album.reload.photo.filename
+```
+
 #### Custom classes
 
 ``` ruby
