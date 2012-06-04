@@ -11,6 +11,10 @@ module MediaMagick
         attaches_many(name, options = {}, &block)
       end
 
+      #
+      # TODO 
+      # * refactor these methods to remove duplication 
+      #
       def attaches_many(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
@@ -63,16 +67,28 @@ module MediaMagick
       def attaches_one(name, options = {}, &block)
         klass = Class.new do
           include Mongoid::Document
+          extend CarrierWave::Mount
 
           embedded_in name
+          mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
+
+          accepts_nested_attributes_for name.to_s.singularize
+
+          self.const_set "TYPE", options[:type] || :image
+          self.const_set "ATTACHMENT", name.to_s.singularize
 
           class_eval(&block) if block_given?
+
+          def method_missing(method, args = nil)
+            return self.send(self.class::ATTACHMENT).file.filename if method == :filename
+            self.send(self.class::ATTACHMENT).send(method)
+          end
         end
 
         name_camelcase = name.to_s.camelcase
         Object.const_set "#{self}#{name_camelcase}", klass
 
-        embeds_one name, class_name: "#{self}#{name_camelcase}"
+        embeds_one name, class_name: "#{self}#{name_camelcase}", cascade_callbacks: true
       end
     end
   end
