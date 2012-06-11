@@ -3,28 +3,40 @@ require 'action_controller/railtie'
 module MediaMagick
   class AttachController < ActionController::Base
     def create
-      if params[:model].constantize.relations[params[:relation]][:relation] == Mongoid::Relations::Referenced::Many
-        klass = params[:model].constantize.where(id: params[:id])
-        klass = klass.empty? ? nil : klass.first
-
-        if klass
-          attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
-        else
-          attachment = params[:model].constantize.relations[params[:relation]][:class_name].constantize.create!(params[:relation].singularize => params[:file])
-        end
-      else
-        klass = params[:model].constantize.find(params[:id])
+      if params[:embedded_in_model]
+        embedded_in = params[:embedded_in_model].constantize.find(params[:embedded_in_id])
+        klass = embedded_in.send(params[:model].pluralize.downcase).find(params[:id])
         attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
         klass.save
+      else
+        if params[:model].constantize.relations[params[:relation]][:relation] == Mongoid::Relations::Referenced::Many
+          klass = params[:model].constantize.where(id: params[:id])
+          klass = klass.empty? ? nil : klass.first
+
+          if klass
+            attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+          else
+            attachment = params[:model].constantize.relations[params[:relation]][:class_name].constantize.create!(params[:relation].singularize => params[:file])
+          end
+        else
+          klass = params[:model].constantize.find(params[:id])
+          attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+          klass.save
+        end
       end
 
-      partial = params[:partial] || "/#{attachment.class::TYPE}"
+      partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
 
       render :partial => partial, :locals => {:model => params[:model], :relation => params[:relation], :attachment => attachment}
     end
 
     def destroy
-      attachment = params[:model].classify.constantize.find(params[:id]).send(params[:relation].pluralize).find(params[:relation_id])
+      if params[:embedded_in_model]
+        attachment = params[:embedded_in_model].classify.constantize.find(params[:embedded_in_id]).send(params[:model].pluralize.downcase).find(params[:id]).send(params[:relation].pluralize).find(params[:relation_id])
+      else
+        attachment = params[:model].classify.constantize.find(params[:id]).send(params[:relation].pluralize).find(params[:relation_id])
+      end
+
       attachment.destroy
       render nothing: true
     end
@@ -33,7 +45,11 @@ module MediaMagick
       attachments = params[:elements]
       attachments = attachments.split(',') unless attachments.kind_of?(Array)
 
-      parent = params[:model].constantize.find(params[:model_id])
+      if params[:embedded_in_model]
+        parent = params[:embedded_in_model].classify.constantize.find(params[:embedded_in_id]).send(params[:model].pluralize.downcase).find(params[:model_id])
+      else
+        parent = params[:model].constantize.find(params[:model_id])
+      end
 
       attachments.each_with_index do |id, i|
         attachment = parent.send(params[:relation]).find(id)
@@ -45,7 +61,11 @@ module MediaMagick
     end
 
     def recreate_versions
-      parent = params[:model].classify.constantize.find(params[:model_id])
+      if params[:embedded_in_model]
+        parent = params[:embedded_in_model].classify.constantize.find(params[:embedded_in_id]).send(params[:model].pluralize.downcase).find(params[:model_id])
+      else
+        parent = params[:model].classify.constantize.find(params[:model_id])
+      end
 
       errors = []
       parent.send(params[:relation].pluralize).each do |attachment|

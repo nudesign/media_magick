@@ -57,7 +57,9 @@
           id:       $container.data('id'),
           relation: $container.data('relation'),
           model:    $container.data('model'),
-          partial:  $container.data('partial')
+          partial:  $container.data('partial'),
+          embedded_in_model: $container.data('embedded-in-model'),
+          embedded_in_id: $container.data('embedded-in-id')
         },
         resize:               settings.resize,
         runtimes:             settings.runtimes,
@@ -73,12 +75,15 @@
         $("a.remove").live('click', function() {
         
           var $attachment = $(this).parents('.attachment');
+          var $attachmentUploader = $(this).parents('.attachmentUploader');
           
           $.get('/remove', {
             model: $container.data('model'),
             id: $container.data('id'),
             relation: $container.data('relation'),
-            relation_id: $attachment.data('id')
+            relation_id: $attachment.data('id'),
+            embedded_in_model: $attachmentUploader.data('embedded-in-model'),
+            embedded_in_id: $attachmentUploader.data('embedded-in-id')
           }, function(data) {
             $attachment.remove();
           });

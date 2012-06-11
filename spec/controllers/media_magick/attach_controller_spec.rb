@@ -17,6 +17,19 @@ describe MediaMagick::AttachController do
         response.body.should =~ /nu.jpg/m
       end
 
+      it "creates a new photo for embedded models" do
+        album = Album.create
+        track = album.tracks.create
+
+        expect {
+          post :create, { embedded_in_id: album.id, embedded_in_model: 'Album', model: 'Track', id: track.id, relation: 'files', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
+        }.to change { track.reload.files.count }.by(1)
+
+        response.should render_template('_image')
+
+        response.body.should =~ /nu.jpg/m
+      end
+
       it "render a personalized partial" do
         album = Album.create
         post :create, { model: 'Album', id: album.id, relation: 'photos', partial: 'albums/photo', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
@@ -45,6 +58,16 @@ describe MediaMagick::AttachController do
         delete :destroy, { model: 'Album', id: album.id, relation: 'photos', relation_id: photo.id }
       }.to change { album.reload.photos.count }.by(-1)
     end
+
+    it "destroys the requested photo for embedded models" do
+      album = Album.create
+      track = album.tracks.create
+      file = track.files.create(file: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
+
+      expect {
+        delete :destroy, { embedded_in_model: 'Album', embedded_in_id: album.id, model: 'Track', id: track.id, relation: 'files', relation_id: file.id }
+      }.to change { track.reload.files.count }.by(-1)
+    end
   end
 
   describe "update priority" do
@@ -61,6 +84,21 @@ describe MediaMagick::AttachController do
       photo1.reload.priority.should eq(0)
       photo2.reload.priority.should eq(1)
     end
+
+    it "updates the attachments priority for embedded models" do
+      album = Album.create
+      track = album.tracks.create
+      file1 = track.files.create(file: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
+      file2 = track.files.create(file: File.new(fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg")))
+
+      id1 = file1.id.to_s
+      id2 = file2.id.to_s
+
+      put :update_priority, { elements: [id1, id2], embedded_in_model: 'Album', embedded_in_id: album.id, model: 'Track', model_id: track.id.to_s, relation: 'files' }
+
+      file1.reload.priority.should eq(0)
+      file2.reload.priority.should eq(1)
+    end
   end
 
   describe "recriate versions" do
@@ -69,6 +107,16 @@ describe MediaMagick::AttachController do
 
       request.env["HTTP_REFERER"] = "/"
       put :recreate_versions, { model: 'album', model_id: album.id.to_s, relation: 'photos' }
+
+      response.status.should be(302)
+    end
+
+    it "recriate images versions for embedded models" do
+      album = Album.create
+      track = album.tracks.create
+
+      request.env["HTTP_REFERER"] = "/"
+      put :recreate_versions, { embedded_in_model: 'album', embedded_in_id: album.id, model: 'track', model_id: track.id.to_s, relation: 'files' }
 
       response.status.should be(302)
     end

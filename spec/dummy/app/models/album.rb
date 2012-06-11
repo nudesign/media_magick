@@ -2,6 +2,8 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
+  embeds_many :tracks
+
   attachs_many :photos
   attachs_many :files, :relation => :referenced
   attachs_many :compound_name_files
