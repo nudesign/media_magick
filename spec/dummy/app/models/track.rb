@@ -4,5 +4,5 @@ class Track
 
   embedded_in :album
 
-  attachs_many :files
+  attaches_many :files
 end
