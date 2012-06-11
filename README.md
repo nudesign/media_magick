@@ -12,11 +12,42 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Getting Started
 
-    $ gem install media_magick
+### Model
 
-## Usage
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attachs_many :photos
+end
+```
+
+### Controller
+
+``` ruby
+def new
+  @album = Album.new
+end
+```
+
+### View
+
+``` erb
+<%= attachment_container @album, :files %>
+```
+
+### Javascript
+
+``` javascript
+$(document).ready(function () {
+  $(".attachmentUploader").pluploadIt();
+});
+```
+
+## Configuring
 
 ### Model
 
@@ -53,6 +84,8 @@ album.reload.photos.first.tags #=> ['ruby', 'guru']
 
 #### Custom uploader
 
+You also need to add `mini_magick` to your **Gemfile** in order to use it for thumbnail generation.
+
 ``` ruby
 class PhotoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
@@ -80,6 +113,28 @@ end
 album = Album.create
 album.photos.create(photo: params[:file])
 album.reload.photos.first.thumb.url
+```
+
+### Form View
+
+``` erb
+<%= attachment_container @album, :files %>
+
+<%= attachment_container @album, :files, newAttachments: { class: 'thumbnails' }, loadedAttachments: { class: 'span3' } %>
+```
+
+or use a custom layout:
+
+``` html
+<%= attachment_container @album, :photos do %>
+
+  <a class="pickAttachments btn" href="javascript://">select files</a>
+  <a class="uploadAttachments btn" href="javascript://">upload files</a>
+
+  <ul class="loadedAttachments">
+    <%= render :partial => 'photos', :collection => @album.photos, :as => 'photo' %>
+  </ul>
+<% end %>
 ```
 
 ## Contributing
