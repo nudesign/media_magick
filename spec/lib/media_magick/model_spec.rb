@@ -24,7 +24,7 @@ describe MediaMagick::Model do
     end
 
     it 'should create a "has_many" relationship with photos' do
-      @class.relations['files'].relation.should eq(Mongoid::Relations::Referenced::Many)
+      @klass.relations['files'].relation.should eq(Mongoid::Relations::Referenced::Many)
     end
 
     it 'should create a "embeds_many" relationship with photos' do
