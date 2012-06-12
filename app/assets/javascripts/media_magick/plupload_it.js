@@ -54,12 +54,12 @@
         flash_swf_url:        settings.flash_swf_url,
         max_file_size:        settings.max_file_size,
         multipart_params: {
-          id:       $container.data('id'),
-          relation: $container.data('relation'),
-          model:    $container.data('model'),
-          partial:  $container.data('partial'),
-          embedded_in_model: $container.data('embedded-in-model'),
-          embedded_in_id: $container.data('embedded-in-id')
+          id:                 $container.data('id'),
+          relation:           $container.data('relation'),
+          model:              $container.data('model'),
+          partial:            $container.data('partial') === undefined ? '' : $container.data('partial'),
+          embedded_in_model:  $container.data('embedded-in-model') === undefined ? '' : $container.data('embedded-in-model'),
+          embedded_in_id:     $container.data('embedded-in-id') === undefined ? '' : $container.data('embedded-in-id')
         },
         resize:               settings.resize,
         runtimes:             settings.runtimes,
