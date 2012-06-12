@@ -8,11 +8,11 @@ describe MediaMagick::Model do
       @klass = User
     end
 
-    it "should includes .attaches_many" do      
+    it "should includes .attaches_many" do
       @klass.should respond_to(:attaches_many)
     end
 
-    it "should includes .attaches_one" do      
+    it "should includes .attaches_one" do
       @klass.should respond_to(:attaches_one)
     end
   end
@@ -125,8 +125,8 @@ describe MediaMagick::Model do
         @klass.attaches_one(:image) do
           def test_method; end
         end
-                
-        @instance.build_image.should respond_to(:test_method) 
+
+        @instance.build_image.should respond_to(:test_method)
       end
     end
 

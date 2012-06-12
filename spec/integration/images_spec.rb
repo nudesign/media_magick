@@ -48,7 +48,7 @@ describe 'Images' do
   end
 
   context "when uploading one file" do
-    let(:user) { User.create }    
+    let(:user) { User.create }
 
     it 'should save the image on mongoid document' do
       user.create_photo(photo: image_file)

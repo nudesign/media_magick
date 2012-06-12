@@ -13,8 +13,8 @@ module MediaMagick
       end
 
       #
-      # TODO 
-      # * refactor these methods to remove duplication 
+      # TODO
+      # * refactor these methods to remove duplication
       #
       def attaches_many(name, options = {}, &block)
         klass = Class.new do
