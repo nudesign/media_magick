@@ -1,4 +1,4 @@
-## 0.1.0 (branch: master)
+## 0.1.0 - June 11, 2012
 
 ### Improvements
 
