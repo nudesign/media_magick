@@ -1,3 +1,9 @@
+## Next Release (branch: master)
+
+### Resolved Issues
+
+* Javascript returning undefined instead of "" prevents attachments from working at embedded documents
+
 ## 0.1.0 - June 11, 2012
 
 ### Improvements
@@ -38,7 +44,11 @@ album = Album.new
 photo = album.photos.create(photo: params[:file])
 ```
 
-* Allow the `attachs_many` to be used in embedded documents
+* Allow the `attaches_many` to be used in embedded documents
+
+``` erb
+<%= attachment_container @album, :photos, {}, {}, embedded_in: @album.artist %>
+```
 
 ### Deprecations
 
