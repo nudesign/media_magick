@@ -5,7 +5,7 @@ class Album
   embeds_many :tracks
 
   attaches_many :photos
-  attaches_many :files, :relation => :referenced
+  attaches_many :files, :relation => :referenced, type: 'file'
   attaches_many :compound_name_files
 
   attaches_many :images do
