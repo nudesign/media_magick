@@ -1,6 +1,6 @@
 module MediaMagick
   module ApplicationHelper
-    def attachment_container(model, relation, newAttachments = {}, loadedAttachments = {}, options = {})
+    def attachment_container(model, relation, options = {})
       data_attributes = {
         model:    model.class.to_s,
         id:       model.id.to_s,
@@ -17,8 +17,8 @@ module MediaMagick
           partial_attributes = {
             model:             model,
             relations:         relation,
-            newAttachments:    newAttachments,
-            loadedAttachments: loadedAttachments,
+            newAttachments:    options[:newAttachments]    || {},
+            loadedAttachments: options[:loadedAttachments] || {},
             partial:           options[:partial]
           }
 

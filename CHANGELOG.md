@@ -1,5 +1,27 @@
 ## Next Release (branch: master)
 
+### Improvements
+
+* Now **newAttachments** and **loadedAttachments** are options for `attachment_container`
+
+After:
+
+``` rb
+attachment_container @album, :photos, { class: 'thumbnails' }, { class: 'span3' }, partial: 'albums/photo'
+
+# without newAttachments and loadedAttachments
+attachment_container @album, :photos, {}, {}, partial: 'albums/photo'
+```
+
+Now:
+
+``` rb
+attachment_container @album, :photos, newAttachments: { class: 'thumbnails' }, loadedAttachments: { class: 'span3' }, partial: 'albums/photo'
+
+# without newAttachments and loadedAttachments
+attachment_container @album, :photos, partial: 'albums/photo'
+```
+
 ### Resolved Issues
 
 * Javascript returning undefined instead of "" prevents attachments from working at embedded documents

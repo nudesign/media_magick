@@ -34,13 +34,13 @@ describe MediaMagick do
 
         context 'using partials' do
           it 'should create a div with data-partial attributes' do
-            helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo').should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'}))
+            helper.attachment_container(album, :photos, partial: 'albums/photo').should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'}))
           end
 
           it 'should include partial option on data attributes' do
             helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: {}, loadedAttachments: {}, partial: 'albums/photo')
 
-            helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo')
+            helper.attachment_container(album, :photos, partial: 'albums/photo')
           end
         end
 
@@ -52,37 +52,37 @@ describe MediaMagick do
           end
 
           it 'should create a div with data-embedded-in-id and data-embedded-in-model attributes' do
-            helper.attachment_container(track, :files, {}, {}, embedded_in: album).should eq(conteiner_html('track', 'files', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files'}))
+            helper.attachment_container(track, :files, embedded_in: album).should eq(conteiner_html('track', 'files', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files'}))
           end
 
           it 'should render /upload partial' do
             helper.should_receive(:render).with('/upload', model: track, relations: :files, newAttachments: {}, loadedAttachments: {}, partial: nil)
 
-            helper.attachment_container(track, :files, {}, {}, embedded_in: album)
+            helper.attachment_container(track, :files, embedded_in: album)
           end
         end
 
         context 'customizing newAttachments element' do
           it 'should create a div with data attributes' do
-            helper.attachment_container(album, :photos, { class: 'thumbnails' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
+            helper.attachment_container(album, :photos, newAttachments: { class: 'thumbnails' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
           end
 
           it 'should render /upload partial with newAttachments attributes' do
             helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: { class: 'thumbnails' }, loadedAttachments: {}, partial: nil)
 
-            helper.attachment_container(album, :photos, { class: 'thumbnails' })
+            helper.attachment_container(album, :photos, newAttachments: { class: 'thumbnails' })
           end
         end
 
         context 'customizing loadedAttachments element' do
           it 'should create a div with data attributes' do
-            helper.attachment_container(album, :photos, {}, { class: 'span3' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
+            helper.attachment_container(album, :photos, loadedAttachments: { class: 'span3' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
           end
 
           it 'should render /upload partial with loadedAttachments attributes' do
             helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: {}, loadedAttachments: { class: 'span3' }, partial: nil)
 
-            helper.attachment_container(album, :photos, {}, { class: 'span3' })
+            helper.attachment_container(album, :photos, loadedAttachments: { class: 'span3' })
           end
         end
       end
