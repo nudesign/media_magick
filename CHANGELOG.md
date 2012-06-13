@@ -1,6 +1,25 @@
 ## Next Release (branch: master)
 
-### Improvements
+### Major Changes (Backwards Incompatible)
+
+* Adding the `as` option in `attachment_container` to define the partial to be rendered
+
+After:
+
+``` rb
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attaches_many :files, type: 'file'
+end
+```
+
+Now:
+
+``` rb
+attachment_container @album, :files, as: 'file'
+```
 
 * Now **newAttachments** and **loadedAttachments** are options for `attachment_container`
 
