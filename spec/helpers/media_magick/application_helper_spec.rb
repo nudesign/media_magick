@@ -3,45 +3,96 @@ require 'spec_helper'
 describe MediaMagick do
   describe ApplicationHelper do
     describe 'attachmentUploader' do
-      it 'should create a div.attachmentUploader.photos' do
-        album = Album.new
-        album.stub(id: '12345678')
+      let(:album) { Album.new }
 
-        helper.attachment_container(album, :photos) do
-        end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="Album" data-relation="photos" id="album-photos"></div>')
+      before do
+        album.stub(id: '12345678')
       end
 
-      it 'should include partial option on data attributes' do
-        album = Album.new
-        album.stub(id: '12345678')
-
-        helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo') do
-        end.should eq('<div class="attachmentUploader photos" data-id="12345678" data-model="Album" data-partial="albums/photo" data-relation="photos" id="album-photos"></div>')
+      def conteiner_html(model, relation, data_attributes, &block)
+        content_tag(:div, nil, id: "#{model}-#{relation}", class: "attachmentUploader #{relation}", data: data_attributes) do
+          class_eval(&block) if block_given?
+        end
       end
 
-      it 'should create a div.attachmentUploader.photos for embedded models' do
-        album = Album.new
-        album.stub(id: '12345678')
+      context 'without block' do
+        before do
+          album.stub(id: '12345678')
 
-        track = album.tracks.new
-        track.stub(id: '87654321')
+          helper.stub(:render)
+        end
 
-        helper.attachment_container(track, :files, {}, {}, embedded_in: album) do
-        end.should eq('<div class="attachmentUploader files" data-embedded-in-id="12345678" data-embedded-in-model="Album" data-id="87654321" data-model="Track" data-relation="files" id="track-files"></div>')
+        it 'should create a div with data attributes' do
+          helper.attachment_container(album, :photos).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
+        end
+
+        it 'should render /upload partial' do
+          helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: {}, loadedAttachments: {}, partial: nil)
+
+          helper.attachment_container(album, :photos)
+        end
+
+        context 'using partials' do
+          it 'should create a div with data-partial attributes' do
+            helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo').should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'}))
+          end
+
+          it 'should include partial option on data attributes' do
+            helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: {}, loadedAttachments: {}, partial: 'albums/photo')
+
+            helper.attachment_container(album, :photos, {}, {}, partial: 'albums/photo')
+          end
+        end
+
+        context 'embbeded models' do
+          let(:track) { album.tracks.new }
+
+          before do
+            track.stub(id: '87654321')
+          end
+
+          it 'should create a div with data-embedded-in-id and data-embedded-in-model attributes' do
+            helper.attachment_container(track, :files, {}, {}, embedded_in: album).should eq(conteiner_html('track', 'files', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files'}))
+          end
+
+          it 'should render /upload partial' do
+            helper.should_receive(:render).with('/upload', model: track, relations: :files, newAttachments: {}, loadedAttachments: {}, partial: nil)
+
+            helper.attachment_container(track, :files, {}, {}, embedded_in: album)
+          end
+        end
+
+        context 'customizing newAttachments element' do
+          it 'should create a div with data attributes' do
+            helper.attachment_container(album, :photos, { class: 'thumbnails' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
+          end
+
+          it 'should render /upload partial with newAttachments attributes' do
+            helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: { class: 'thumbnails' }, loadedAttachments: {}, partial: nil)
+
+            helper.attachment_container(album, :photos, { class: 'thumbnails' })
+          end
+        end
+
+        context 'customizing loadedAttachments element' do
+          it 'should create a div with data attributes' do
+            helper.attachment_container(album, :photos, {}, { class: 'span3' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }))
+          end
+
+          it 'should render /upload partial with loadedAttachments attributes' do
+            helper.should_receive(:render).with('/upload', model: album, relations: :photos, newAttachments: {}, loadedAttachments: { class: 'span3' }, partial: nil)
+
+            helper.attachment_container(album, :photos, {}, { class: 'span3' })
+          end
+        end
       end
 
-      it 'should renders default partial if block is not given' do
-        photo = AlbumPhotos.new
-        photo.stub(filename: 'photo.jpg', url: 'url/photo.jpg')
+      context 'with block' do
+        it 'should create a div with data attributes and content inside' do
+          expected =  conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos' }) { 'template here' }
 
-        file = AlbumFiles.new
-        file.stub(filename: 'file.pdf', url: 'url/file.pdf')
-
-        album = Album.new(photos: [photo], files: [file])
-        album.stub(id: '12345678')
-
-        helper.attachment_container(album, :photos).should match(/url\/photo.jpg/)
-        helper.attachment_container(album, :files).should match(/url\/file.pdf/)
+          helper.attachment_container(album, :photos) { 'template here' }.should eq(expected)
+        end
       end
     end
   end
