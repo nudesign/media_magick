@@ -35,17 +35,6 @@ describe MediaMagick::AttachController do
         post :create, { model: 'Album', id: album.id, relation: 'photos', partial: 'albums/photo', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
         response.should render_template('albums/_photo')
       end
-
-      it 'creates a new photo without parent' do
-        album = Album.new
-        album_files = AlbumFiles.create(file: File.new("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg"))
-
-        AlbumFiles.should_receive(:create!).and_return(album_files)
-
-        post :create, { model: 'Album', id: album.id, relation: 'files', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
-
-        response.body.should =~ /nu.jpg/m
-      end
     end
   end
 

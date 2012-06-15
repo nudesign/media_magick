@@ -19,11 +19,7 @@ module MediaMagick
           field :priority, type: Integer, default: 0
           default_scope asc(:priority)
 
-          if options[:relation] == :referenced
-            belongs_to :attachmentable, polymorphic: true
-          else
-            embedded_in :attachmentable, polymorphic: true
-          end
+          embedded_in :attachmentable, polymorphic: true
 
           mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
 
@@ -41,23 +37,7 @@ module MediaMagick
         name_camelcase = name.to_s.camelcase
         Object.const_set "#{self}#{name_camelcase}", klass
 
-        if options[:relation] == :referenced
-          klass.collection_name = "#{self.name}_#{name.to_s.camelcase}".parameterize
-
-          has_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
-
-          field "#{name.to_s.singularize}_ids", type: Array
-
-          before_create do
-            ids = self.send("#{name.to_s.singularize}_ids") || []
-
-            ids.each do |id|
-              "#{self.class}#{name_camelcase}".constantize.find(id).update_attributes(attachmentable: self)
-            end
-          end
-        else
-          embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
-        end
+        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
       end
 
       def attaches_one(name, options = {}, &block)

@@ -23,10 +23,6 @@ describe MediaMagick::Model do
       @instance = @klass.new
     end
 
-    it 'should create a "has_many" relationship with photos' do
-      @klass.relations['files'].relation.should eq(Mongoid::Relations::Referenced::Many)
-    end
-
     it 'should create a "embeds_many" relationship with photos' do
       @klass.relations['photos'].relation.should eq(Mongoid::Relations::Embedded::Many)
     end

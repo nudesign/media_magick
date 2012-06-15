@@ -43,6 +43,8 @@ attachment_container @album, :photos, partial: 'albums/photo'
 
 * `MediaMagick::Model#attachs_many` has been removed in favor of `attaches_many`.
 
+* Removing related relations and the ability to create an image without a father.
+
 ### Resolved Issues
 
 * Javascript returning undefined instead of "" prevents attachments from working at embedded documents
