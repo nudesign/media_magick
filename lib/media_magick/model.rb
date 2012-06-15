@@ -7,11 +7,6 @@ module MediaMagick
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def attachs_many(name, options = {}, &block)
-        warn "[DEPRECATION] `attachs_many` is deprecated.  Please use `attaches_many` instead."
-        attaches_many(name, options, &block)
-      end
-
       #
       # TODO
       # * refactor these methods to remove duplication

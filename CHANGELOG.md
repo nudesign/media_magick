@@ -41,6 +41,8 @@ attachment_container @album, :photos, newAttachments: { class: 'thumbnails' }, l
 attachment_container @album, :photos, partial: 'albums/photo'
 ```
 
+* `MediaMagick::Model#attachs_many` has been removed in favor of `attaches_many`.
+
 ### Resolved Issues
 
 * Javascript returning undefined instead of "" prevents attachments from working at embedded documents
