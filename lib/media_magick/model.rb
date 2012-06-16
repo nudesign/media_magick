@@ -7,53 +7,46 @@ module MediaMagick
     extend ActiveSupport::Concern
 
     module ClassMethods
-      #
-      # TODO
-      # * refactor these methods to remove duplication
-      #
-      def attaches_many(name, options = {}, &block)
-        klass = Class.new do
-          include Mongoid::Document
-          extend CarrierWave::Mount
+      def attaches_many(name, options = {})
+        attaches_block = block_given? ? Proc.new : nil
 
+        name_camelcase = create_attaches_class(name, options, attaches_block) do
           field :priority, type: Integer, default: 0
+
           default_scope asc(:priority)
 
-          embedded_in :attachmentable, polymorphic: true
-
-          mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
-
-          self.const_set "TYPE", options[:type] || :image
-          self.const_set "ATTACHMENT", name.to_s.singularize
-
-          class_eval(&block) if block_given?
-
-          def method_missing(method, args = nil)
-            return self.send(self.class::ATTACHMENT).file.filename if method == :filename
-            self.send(self.class::ATTACHMENT).send(method)
-          end
+          embedded_in(:attachmentable, polymorphic: true)
         end
-
-        name_camelcase = name.to_s.camelcase
-        Object.const_set "#{self}#{name_camelcase}", klass
 
         embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
       end
 
-      def attaches_one(name, options = {}, &block)
+      def attaches_one(name, options = {})
+        attaches_block = block_given? ? Proc.new : nil
+
+        name_camelcase = create_attaches_class(name, options, attaches_block) do
+          embedded_in(name)
+          accepts_nested_attributes_for(name.to_s.singularize)
+        end
+
+        embeds_one(name, class_name: "#{self}#{name_camelcase}", cascade_callbacks: true)
+      end
+
+      private
+
+      def create_attaches_class(name, options, attaches_block, &block)
         klass = Class.new do
           include Mongoid::Document
           extend CarrierWave::Mount
 
-          embedded_in name
-          mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
+          class_eval(&block) if block_given?
 
-          accepts_nested_attributes_for name.to_s.singularize
+          mount_uploader name.to_s.singularize, (options[:uploader] || AttachmentUploader)
 
           self.const_set "TYPE", options[:type] || :image
           self.const_set "ATTACHMENT", name.to_s.singularize
 
-          class_eval(&block) if block_given?
+          class_eval(&attaches_block) if attaches_block
 
           def method_missing(method, args = nil)
             return self.send(self.class::ATTACHMENT).file.filename if method == :filename
@@ -64,7 +57,7 @@ module MediaMagick
         name_camelcase = name.to_s.camelcase
         Object.const_set "#{self}#{name_camelcase}", klass
 
-        embeds_one name, class_name: "#{self}#{name_camelcase}", cascade_callbacks: true
+        return name_camelcase
       end
     end
   end
