@@ -1,4 +1,4 @@
-# MediaMagick [![Build Status](https://secure.travis-ci.org/nudesign/media_magick.png?branch=master)](http://travis-ci.org/nudesign/media_magick) [![Build Status](https://gemnasium.com/nudesign/media_magick.png)](http://gemnasium.com/nudesign/media_magick)
+# MediaMagick [![Build Status](https://secure.travis-ci.org/nudesign/media_magick.png?branch=master)](http://travis-ci.org/nudesign/media_magick) [![Build Status](https://gemnasium.com/nudesign/media_magick.png)](http://gemnasium.com/nudesign/media_magick) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/nudesign/media_magick)
 
 MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.
 
