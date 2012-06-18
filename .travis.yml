@@ -8,4 +8,7 @@ notifications:
     - contato@lucasrenan.com
     - rbrancher@gmail.com
     - tiagogodinho3@gmail.com
-    - stefano@heavenstudio.com.br
+
+gemfile:
+  - Gemfile
+  - gemfiles/mongoid-3.0.gemfile
