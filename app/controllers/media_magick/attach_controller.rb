@@ -6,24 +6,12 @@ module MediaMagick
       if !params[:embedded_in_model].blank?
         embedded_in = params[:embedded_in_model].constantize.find(params[:embedded_in_id])
         klass = embedded_in.send(params[:model].pluralize.downcase).find(params[:id])
-        attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
-        klass.save
       else
-        if params[:model].constantize.relations[params[:relation]][:relation] == Mongoid::Relations::Referenced::Many
-          klass = params[:model].constantize.where(id: params[:id])
-          klass = klass.empty? ? nil : klass.first
-
-          if klass
-            attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
-          else
-            attachment = params[:model].constantize.relations[params[:relation]][:class_name].constantize.create!(params[:relation].singularize => params[:file])
-          end
-        else
-          klass = params[:model].constantize.find(params[:id])
-          attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
-          klass.save
-        end
+        klass = params[:model].constantize.find(params[:id])
       end
+
+      attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+      klass.save
 
       partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
 
