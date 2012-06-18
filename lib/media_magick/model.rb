@@ -26,7 +26,6 @@ module MediaMagick
 
         name_camelcase = create_attaches_class(name, options, attaches_block) do
           embedded_in(name)
-          accepts_nested_attributes_for(name.to_s.singularize)
         end
 
         embeds_one(name, class_name: "#{self}#{name_camelcase}", cascade_callbacks: true)

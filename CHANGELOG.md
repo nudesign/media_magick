@@ -1,6 +1,12 @@
 ## Next Release (branch: master)
 
+### Improvements
+
+* Adding support to Mongoid 3.
+
 ### Major Changes (Backwards Incompatible)
+
+* Media Magick no longer supports Ruby 1.8.7.
 
 * Adding the `as` option in `attachment_container` to define the partial to be rendered
 

@@ -24,17 +24,20 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   config.before :suite do
-    Mongoid.configure do |config|
-      config.master = Mongo::Connection.new.db('media_magick')
+    if Mongoid::VERSION < '3'
+      Mongoid.configure do |config|
+        config.master = Mongo::Connection.new.db('media_magick')
+      end
+    else
+      Mongoid.connect_to('media_magick')
     end
   end
 
   config.after :each do
-    Mongoid.master.collections.select { |c| c.name !~ /^system/ }.each(&:drop)
-  end
-
-  config.after :suite do
-    Mongoid.master.connection.drop_database('media_magick')
-    Mongoid.master.connection.close
+    if Mongoid::VERSION < '3'
+      Mongoid.master.collections.select { |c| c.name !~ /^system/ }.each(&:drop)
+    else
+      Mongoid::Config.purge!
+    end
   end
 end

@@ -52,7 +52,7 @@ describe MediaMagick::Model do
       end
 
       it "should be ordered by ascending priority" do
-        @instance = @klass.new
+        @instance = @klass.create
 
         photo2 = @instance.photos.create(priority: 1)
         photo1 = @instance.photos.create(priority: 0)
