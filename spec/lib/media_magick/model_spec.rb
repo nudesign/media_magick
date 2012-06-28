@@ -39,7 +39,8 @@ describe MediaMagick::Model do
     end
 
     describe 'allow_videos' do
-      subject { @instance.photos_and_videos.create }
+      let(:album) { Album.create }
+      subject { album.photos_and_videos.create }
 
       it 'should include type field' do
         subject.fields.should include('type')
@@ -50,7 +51,7 @@ describe MediaMagick::Model do
       end
 
       it 'should accept youtube videos' do
-        video = @instance.photos_and_videos.create(video: 'youtube.com/watch?v=FfUHkPf9D9k')
+        video = album.photos_and_videos.create(video: 'youtube.com/watch?v=FfUHkPf9D9k')
 
         video.type.should eq('video')
 
@@ -62,7 +63,7 @@ describe MediaMagick::Model do
       end
 
       it 'should accept vimeo videos' do
-        video = @instance.photos_and_videos.create(video: 'vimeo.com/43401461')
+        video = album.photos_and_videos.create(video: 'vimeo.com/43401461')
 
         video.type.should eq('video')
 
