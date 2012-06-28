@@ -38,6 +38,41 @@ describe MediaMagick::Model do
       end
     end
 
+    describe 'allow_videos' do
+      subject { @instance.photos_and_videos.create }
+
+      it 'should include type field' do
+        subject.fields.should include('type')
+      end
+
+      it 'should include video field' do
+        subject.fields.should include('video')
+      end
+
+      it 'should accept youtube videos' do
+        video = @instance.photos_and_videos.create(video: 'youtube.com/watch?v=FfUHkPf9D9k')
+
+        video.type.should eq('video')
+
+        video.url.should eq("/uploads/album_photos_and_videos/photos_and_video/#{video.id}/FfUHkPf9D9k.jpg")
+        video.thumb.url.should eq("/uploads/album_photos_and_videos/photos_and_video/#{video.id}/thumb_FfUHkPf9D9k.jpg")
+        video.source.should eq('<iframe width="560" height="315" src="http://www.youtube.com/embed/FfUHkPf9D9k" frameborder="0" allowfullscreen></iframe>')
+
+        video.source(width: 156, height: 88).should eq('<iframe width="156" height="88" src="http://www.youtube.com/embed/FfUHkPf9D9k" frameborder="0" allowfullscreen></iframe>')
+      end
+
+      it 'should accept vimeo videos' do
+        video = @instance.photos_and_videos.create(video: 'vimeo.com/43401461')
+
+        video.type.should eq('video')
+
+        video.url.should eq("/uploads/album_photos_and_videos/photos_and_video/#{video.id}/43401461.jpg")
+        video.thumb.url.should eq("/uploads/album_photos_and_videos/photos_and_video/#{video.id}/thumb_43401461.jpg")
+        video.source.should eq('<iframe src="http://player.vimeo.com/video/43401461?title=0&byline=0&portrait=0" width="500" height="341" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>')
+        video.source(width: 156, height: 88).should eq('<iframe src="http://player.vimeo.com/video/43401461?title=0&byline=0&portrait=0" width="156" height="88" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>')
+      end
+    end
+
     describe '#photos' do
       subject { @instance.photos.new }
 

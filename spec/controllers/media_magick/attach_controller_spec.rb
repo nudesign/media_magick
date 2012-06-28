@@ -17,6 +17,18 @@ describe MediaMagick::AttachController do
         response.body.should =~ /nu.jpg/m
       end
 
+      it "creates a new video" do
+        album = Album.create
+
+        expect {
+          post :create, { model: 'Album', id: album.id, relation: 'photos_and_videos', video: 'youtube.com/watch?v=FfUHkPf9D9k' }
+        }.to change { album.reload.photos_and_videos.count }.by(1)
+
+        response.should render_template('_image')
+
+        response.body.should =~ /FfUHkPf9D9k/m
+      end
+
       it "creates a new photo for embedded models" do
         album = Album.create
         track = album.tracks.create

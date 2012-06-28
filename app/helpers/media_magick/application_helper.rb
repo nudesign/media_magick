@@ -27,6 +27,10 @@ module MediaMagick
       end
     end
 
+    def attachment_container_for_video(model, relation)
+      raw "<input type=\"text\" name=\"#{model.id.to_s}[#{relation}]\" id=\"#{model.id.to_s}_#{relation}\" class=\"attachmentVideoUploaderField\"><a class=\"attachmentVideoUploader\" href=\"javascript://\">upload</a>"
+    end
+
     private
 
     def get_partial_name(options)

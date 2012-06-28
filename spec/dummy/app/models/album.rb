@@ -13,4 +13,6 @@ class Album
   end
 
   attaches_many :pictures, uploader: PictureUploader
+
+  attaches_many :photos_and_videos, as: 'photo', uploader: PictureUploader, allow_videos: true
 end

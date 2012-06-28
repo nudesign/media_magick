@@ -10,7 +10,12 @@ module MediaMagick
         klass = params[:model].constantize.find(params[:id])
       end
 
-      attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+      if params[:video]
+        attachment = klass.send(params[:relation].pluralize).create(video: params[:video])
+      else
+        attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+      end
+
       klass.save
 
       partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
