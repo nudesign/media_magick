@@ -2,6 +2,36 @@
 
 ### Improvements
 
+* Adding support to videos.
+
+Model:
+
+``` rb
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attaches_many :medias, allow_videos: true
+end
+
+album = Album.create
+album.medias.create(video: 'youtube.com/watch?v=FfUHkPf9D9k')
+album.reload.photos.first.url
+album.reload.photos.first.filename
+
+# Specific methods
+
+album.reload.medias.first.type   #=> 'video'
+album.reload.medias.first.video  #=> 'youtube.com/watch?v=FfUHkPf9D9k'
+album.reload.medias.first.source #=> <iframe>youtube video</iframe>
+```
+
+View:
+
+``` ruby
+attachment_container_for_video @album, :files
+```
+
 * Adding support to Mongoid 3.
 
 ### Major Changes (Backwards Incompatible)
