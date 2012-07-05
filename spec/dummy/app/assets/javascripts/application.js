@@ -12,4 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require media_magick/plupload_it
 //= require_tree .
+
+$(document).ready(function () {
+  $(".attachmentUploader").pluploadIt();
+});

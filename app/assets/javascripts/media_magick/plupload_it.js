@@ -71,9 +71,10 @@
       uploader.bind('Init', function(up, params) {
         if ($('#' + settings.container + '-runtimeInfo').length > 0) $('#' + settings.container + '-runtimeInfo').text("Current runtime: " + params.runtime);
         // if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
-        
-        $("a.remove").live('click', function() {
-        
+
+        var modelAndRelation = $container.data('model') + "-" + $container.data('relation');
+
+        $("#" + $container.attr("id") + " a.remove").live('click', function() {
           var $attachment = $(this).parents('.attachment');
           var $attachmentUploader = $(this).parents('.attachmentUploader');
           
@@ -89,9 +90,10 @@
           });
         });
 
-        $(".attachmentVideoUploader-" + $container.data('relation')).live('click', function() {
+        $("#attachmentVideoUploader" + modelAndRelation).live('click', function() {
           var $attachment = $(this).parents('.attachment');
           var $attachmentUploader = $(this).parents('.attachmentUploader');
+          var $videoField = $("#attachmentVideoUploaderField" + modelAndRelation);
 
           $.get('/upload', {
             model: $container.data('model'),
@@ -101,9 +103,10 @@
             embedded_in_model: $attachmentUploader.data('embedded-in-model'),
             embedded_in_id: $attachmentUploader.data('embedded-in-id'),
             partial: $container.data('partial') === undefined ? '' : $container.data('partial'),
-            video: $(".attachmentVideoUploaderField").val()
+            video: $videoField.val()
           }, function(data) {
-            $(".loadedAttachments").append(data);
+            $("#" + $container.attr("id") + "-loadedAttachments").append(data);
+            $videoField.val("");
           });
         });
       });

@@ -2,21 +2,9 @@ development:
   host: localhost
   database: dummy_development
 
-  sessions:
-    default:
-      database: dummy_development
-      hosts:
-        - localhost:27017
-
 test:
   host: localhost
   database: dummy_test
-
-  sessions:
-    default:
-      database: dummy_test
-      hosts:
-        - localhost:27017
 
 # set these environment variables on your prod server
 production:

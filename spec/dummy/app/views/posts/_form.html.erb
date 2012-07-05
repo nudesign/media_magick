@@ -1,0 +1,47 @@
+<%= form_for(@post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :text %><br />
+    <%= f.text_area :text %>
+  </div>
+
+  <h3>uploads</h3>
+  <div class="field" style="overflow: hidden;">
+    <label>imagens and videos</label>
+    <%- if @post.new_record? -%>
+      create first
+    <%- else -%>
+      <%= attachment_container_for_video(@post, :images) %>
+      <br /><br />
+      <%= attachment_container @post, :images %>
+    <%- end -%>
+  </div>
+
+  <div class="field">
+    <label>files</label>
+    <%- if @post.new_record? -%>
+      create first
+    <%- else -%>
+      <%= attachment_container @post, :files, :as => "file" %>
+    <%- end -%>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

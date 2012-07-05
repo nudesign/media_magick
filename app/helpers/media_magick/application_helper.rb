@@ -27,8 +27,12 @@ module MediaMagick
       end
     end
 
-    def attachment_container_for_video(model, relation)
-      raw "<input type=\"text\" name=\"#{model.id.to_s}[#{relation}]\" id=\"#{model.id.to_s}_#{relation}\" class=\"attachmentVideoUploaderField\"><a class=\"attachmentVideoUploader-#{relation}\" href=\"javascript://\">upload</a>"
+    def attachment_container_for_video(object, relation)
+      id       = "#{object.class.name}-#{relation}"
+      html     = %{<input type="text" id="attachmentVideoUploaderField#{id}">
+        <a id="attachmentVideoUploader#{id}" href="javascript://">upload</a>}
+        
+      html.html_safe
     end
 
     private
