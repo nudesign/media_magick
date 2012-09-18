@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'plupload-rails', '~> 1.0.6'
   gem.add_dependency 'rails',          '~> 3.2.0'
   
-  gem.add_development_dependency 'bson_ext',    '~> 1.6.0'
+  gem.add_development_dependency 'bson_ext',    '~> 1.7.0'
   gem.add_development_dependency 'mini_magick', '~> 3.4'
   gem.add_development_dependency 'rake',        '~> 0.9'
   gem.add_development_dependency 'rspec-rails', '~> 2.10.1'
