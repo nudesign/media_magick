@@ -3,7 +3,7 @@ require 'action_controller/railtie'
 module MediaMagick
   class AttachController < ActionController::Base
     def create
-      if !params[:embedded_in_model].blank?
+      if params[:embedded_in_model]
         embedded_in = params[:embedded_in_model].constantize.find(params[:embedded_in_id])
         klass = embedded_in.send(params[:model].pluralize.downcase).find(params[:id])
       else
