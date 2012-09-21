@@ -53,7 +53,7 @@ module MediaMagick
       when 'youtube'
         "<iframe width=\"#{ options[:width] || 560}\" height=\"#{ options[:height] || 315 }\" src=\"http://www.youtube.com/embed/#{@id}\" frameborder=\"0\" allowfullscreen></iframe>"
       when 'vimeo'
-        "<iframe src=\"http://player.vimeo.com/video/#{@id}?title=0&byline=0&portrait=0#{ "&#{options[:url_options]}" if options[:url_options] }\" width=\"#{ options[:width] || 500 }\" height=\"#{ options[:height] || 341 }\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>"
+        "<iframe src=\"http://player.vimeo.com/video/#{@id}?title=0&byline=0&portrait=0#{ "&#{options[:url_options]}" if options[:url_options] }#{ "&player_id=#{ options[:player_id] }" if options[:player_id] }\" width=\"#{ options[:width] || 500 }\" height=\"#{ options[:height] || 341 }\" frameborder=\"0\" #{ "id=\"#{ options[:player_id] if options[:player_id] }\"" } webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>"
       end
     end
   end
