@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'carrierwave/mongoid'
 require 'media_magick/attachment_uploader'
+require 'media_magick/video/parser'
 
 module MediaMagick
   module Model
@@ -51,13 +52,13 @@ module MediaMagick
               self.type = 'video'
               super
 
-              video = MediaMagick::VideoParser.new(url)
+              video = MediaMagick::Video::Parser.new(url)
 
               send(self.class::ATTACHMENT).store!(video.to_image) if video.valid?
             end
 
             def source(options = {})
-              video = MediaMagick::VideoParser.new(self.video)
+              video = MediaMagick::Video::Parser.new(self.video)
 
               video.to_html(options) if video.valid?
             end
