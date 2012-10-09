@@ -1,7 +1,10 @@
 require 'action_controller/railtie'
+require 'media_magick/controller/helpers'
 
 module MediaMagick
   class AttachController < ActionController::Base
+    include MediaMagick::Controller::Helpers
+
     def create
       if !params[:embedded_in_model].blank?
         embedded_in = params[:embedded_in_model].constantize.find(params[:embedded_in_id])
@@ -38,14 +41,10 @@ module MediaMagick
       attachments = params[:elements]
       attachments = attachments.split(',') unless attachments.kind_of?(Array)
 
-      if !params[:embedded_in_model].blank?
-        parent = params[:embedded_in_model].classify.constantize.find(params[:embedded_in_id]).send(params[:model].pluralize.downcase).find(params[:model_id])
-      else
-        parent = params[:model].constantize.find(params[:model_id])
-      end
+      doc = find_doc_by_params(params)
 
       attachments.each_with_index do |id, i|
-        attachment = parent.send(params[:relation]).find(id)
+        attachment = doc.send(params[:relation]).find(id)
         attachment.priority = i
         attachment.save
       end
@@ -54,14 +53,10 @@ module MediaMagick
     end
 
     def recreate_versions
-      if !params[:embedded_in_model].blank?
-        parent = params[:embedded_in_model].classify.constantize.find(params[:embedded_in_id]).send(params[:model].pluralize.downcase).find(params[:model_id])
-      else
-        parent = params[:model].classify.constantize.find(params[:model_id])
-      end
+      doc = find_doc_by_params(params)
 
       errors = []
-      parent.send(params[:relation].pluralize).each do |attachment|
+      doc.send(params[:relation].pluralize).each do |attachment|
         errors << attachment unless attachment.recreate_versions!
       end
 
