@@ -3,6 +3,8 @@
 <input type="text" id="attachmentVideoUploaderField<%= id %>">
 <a id="attachmentVideoUploader<%= id %>" href="javascript://">upload</a>
 
+<% if load_attachments %>
 <ul class="loadedAttachments <%= loadedAttachments[:class] %>">
   <%= render partial: partial, collection: model.send(relations), :as => :attachment, :locals => { model: nil, relation: nil } %>
 </ul>
+<% end %>
