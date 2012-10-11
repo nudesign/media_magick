@@ -46,6 +46,7 @@ module MediaMagick
             relations:         relation,
             newAttachments:    options[:newAttachments]    || {},
             loadedAttachments: options[:loadedAttachments] || {},
+            load_attachments:  options[:load_attachments]  || false, #don't show attachments by default
             partial:           get_partial_name(options)
           }
 

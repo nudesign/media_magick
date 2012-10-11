@@ -22,7 +22,7 @@
 
   <h3>uploads</h3>
   <div class="field" style="overflow: hidden;">
-    <label>imagens and videos</label>
+    <label>images and videos</label>
     <%- if @post.new_record? -%>
       create first
     <%- else -%>
@@ -38,6 +38,15 @@
       create first
     <%- else -%>
       <%= attachment_container @post, :files, :as => "file" %>
+    <%- end -%>
+  </div>
+
+  <div class="field" style="overflow: hidden;">
+    <label>just videos</label>
+    <%- if @post.new_record? -%>
+      create first
+    <%- else -%>
+      <%= attachment_container_for_video(@post, :videos, load_attachments: true) %>      
     <%- end -%>
   </div>
 
