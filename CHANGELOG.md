@@ -1,4 +1,11 @@
-## Next Release (branch: master)
+## Next Release (branch: v0.2)
+
+Helpers:
+
+* `attachment_container_for_video` doesn't render resources (images or videos)
+* `attachment_container_just_for_video` render resources (video images)
+
+## 0.1.1 - October 11, 2012
 
 ### Improvements
 
