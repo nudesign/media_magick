@@ -36,7 +36,7 @@ end
 ### View
 
 ``` erb
-<%= attachment_container @album, :files %>
+<%= attachment_container @album, :photos %>
 ```
 
 ### Javascript
