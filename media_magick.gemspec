@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'mini_magick', '~> 3.4'
   gem.add_development_dependency 'rake',        '~> 0.9'
   gem.add_development_dependency 'rspec-rails', '~> 2.11.0'
-  gem.add_development_dependency 'simplecov',   '~> 0.6.1'
+  gem.add_development_dependency 'simplecov',   '~> 0.7.0'
 
   #gems for code analyses
   gem.add_development_dependency 'flog', '~> 3.0.0.b2'
