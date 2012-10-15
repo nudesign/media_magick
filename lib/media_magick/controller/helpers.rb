@@ -15,6 +15,26 @@ module MediaMagick
         end
         doc
       end
+
+      # Creates a video based on a url
+      #
+      # @example Creates a video for an user
+      #   user   = User.create
+      #   params = {relation: "photo", video: "youtube.com/watch?v=FfUHkPf9D9k"}
+      #   create_video(user, params)
+      #
+      # @param [ Mongoid::Document ] Mongoid document object
+      # @param [ Hash ] Hash with relation name and video url
+      #
+      # @return [ Mongoid::Document ] The mongoid document object
+      def create_video(obj, params)
+        relation_metadata = obj.class.relations[params[:relation]]
+
+        unless relation_metadata.many? # one
+          return obj.send("create_#{params[:relation]}", {video: params[:video]})
+        end
+        obj.send(params[:relation]).create(video: params[:video])
+      end
     end
   end
 end

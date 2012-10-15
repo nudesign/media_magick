@@ -8,18 +8,18 @@ module MediaMagick
     def create
       if !params[:embedded_in_model].blank?
         embedded_in = params[:embedded_in_model].constantize.find(params[:embedded_in_id])
-        klass = embedded_in.send(params[:model].pluralize.downcase).find(params[:id])
+        obj = embedded_in.send(params[:model].pluralize.downcase).find(params[:id])
       else
-        klass = params[:model].constantize.find(params[:id])
+        obj = params[:model].constantize.find(params[:id])
       end
 
-      if params[:video]
-        attachment = klass.send(params[:relation].pluralize).create(video: params[:video])
+      if params[:video]        
+        attachment = create_video(obj, params)
       else
-        attachment = klass.send(params[:relation].pluralize).create(params[:relation].singularize => params[:file])
+        attachment = obj.send(params[:relation]).create(params[:relation].singularize => params[:file])
       end
 
-      klass.save
+      obj.save
 
       partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
 

@@ -13,20 +13,7 @@ describe MediaMagick::AttachController do
         }.to change { album.reload.photos.count }.by(1)
 
         response.should render_template('_image')
-
         response.body.should =~ /nu.jpg/m
-      end
-
-      it "creates a new video" do
-        album = Album.create
-
-        expect {
-          post :create, { model: 'Album', id: album.id, relation: 'photos_and_videos', video: 'youtube.com/watch?v=FfUHkPf9D9k' }
-        }.to change { album.reload.photos_and_videos.count }.by(1)
-
-        response.should render_template('_image')
-
-        response.body.should =~ /FfUHkPf9D9k/m
       end
 
       it "creates a new photo for embedded models" do
@@ -38,7 +25,6 @@ describe MediaMagick::AttachController do
         }.to change { track.reload.files.count }.by(1)
 
         response.should render_template('_image')
-
         response.body.should =~ /nu.jpg/m
       end
 
@@ -46,6 +32,34 @@ describe MediaMagick::AttachController do
         album = Album.create
         post :create, { model: 'Album', id: album.id, relation: 'photos', partial: 'albums/photo', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
         response.should render_template('albums/_photo')
+      end
+
+      describe "creating videos" do
+        context "relation is attaches many" do
+          it "creates a new video" do
+            album = Album.create
+
+            expect {
+              post :create, { model: 'Album', id: album.id, relation: 'photos_and_videos', video: 'youtube.com/watch?v=FfUHkPf9D9k' }
+            }.to change { album.reload.photos_and_videos.count }.by(1)
+
+            response.should render_template('_image')
+            response.body.should =~ /FfUHkPf9D9k/m
+          end
+        end
+
+        context "relation is attaches one" do
+          it "creates a new video" do
+            user      = User.create
+            video_url = 'youtube.com/watch?v=FfUHkPf9D9k'
+            
+            post :create, { model: 'User', id: user.id, relation: 'photo_and_video', video: video_url }
+
+            user.reload.photo_and_video.video.should eq(video_url)
+            response.should render_template('_image')
+            response.body.should =~ /FfUHkPf9D9k/m
+          end
+        end
       end
     end
   end
@@ -102,8 +116,8 @@ describe MediaMagick::AttachController do
     end
   end
 
-  describe "recriate versions" do
-    it "recriate images versions" do
+  describe "recreate versions" do
+    it "recreate images versions" do
       album = Album.create
 
       request.env["HTTP_REFERER"] = "/"
@@ -112,7 +126,7 @@ describe MediaMagick::AttachController do
       response.status.should be(302)
     end
 
-    it "recriate images versions for embedded models" do
+    it "recreate images versions for embedded models" do
       album = Album.create
       track = album.tracks.create
 

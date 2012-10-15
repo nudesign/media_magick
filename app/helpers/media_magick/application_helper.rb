@@ -37,7 +37,7 @@ module MediaMagick
       data_attributes.merge!(:partial => get_partial_name(options))
       data_attributes.merge!(:embedded_in_id => options[:embedded_in].id.to_s, :embedded_in_model => options[:embedded_in].class.to_s) if options[:embedded_in]
 
-      content_tag :div, id: model.class.to_s.downcase << '-' << relation.to_s, class: 'attachmentUploader ' << relation.to_s, data: data_attributes do
+      content_tag :div, id: model.class.to_s.downcase << '-' << relation.to_s, class: 'attachmentVideoUploader ' << relation.to_s, data: data_attributes do
         if block_given?
           yield
         else
