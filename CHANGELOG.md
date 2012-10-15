@@ -3,7 +3,11 @@
 Helpers:
 
 * `attachment_container_for_video` doesn't render resources (images or videos)
-* `attachment_container_just_for_video` render resources (video images)
+* updates carrierwave (~> 0.7.0)
+
+### Resolved Issues
+
+* #2 - video upload for attaches one relation
 
 ## 0.1.1 - October 11, 2012
 
