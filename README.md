@@ -14,6 +14,15 @@ And then execute:
 
 ## Getting Started
 
+### Assets
+
+Add these lines after `//= require jquery` in `app/assets/javascripts/application.js`:
+
+```
+//= require media_magick/plupload_it
+//= require media_magick/toggleSortable
+```
+
 ### Model
 
 ``` ruby
@@ -21,7 +30,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attachs_many :photos
+  attaches_many :photos
 end
 ```
 
