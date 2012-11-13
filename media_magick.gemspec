@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'bson_ext',    '~> 1.7.0'
   gem.add_development_dependency 'mini_magick', '~> 3.4'
   gem.add_development_dependency 'rake',        '~> 0.9'
-  gem.add_development_dependency 'rspec-rails', '~> 2.11.0'
+  gem.add_development_dependency 'rspec-rails', '~> 2.12.0'
   gem.add_development_dependency 'simplecov',   '~> 0.7.0'
 
   #gems for code analyses
