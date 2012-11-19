@@ -7,6 +7,14 @@ Helpers:
 
 ## 0.1.1 - October 11, 2012
 
+## 0.2.0 - November 19, 2012
+
+### Improvements
+
+* Update carrierwave to 0.7.0.
+
+## 0.1.1 - October 11, 2012
+
 ### Improvements
 
 * Adding support to videos.
