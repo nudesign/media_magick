@@ -1,5 +1,7 @@
 ## Next Release (branch: master)
 
+## 0.2.0 - November 19, 2012
+
 ### Improvements
 
 * Update carrierwave to 0.7.0.
