@@ -7,13 +7,13 @@ module MediaMagick
         version_key = version_name.present? ? version_name : "_original"
 
         begin
-          if model.dimensions[version_key.to_sym].nil?
+          if model.dimensions[version_key.to_s].nil?
             image = MiniMagick::Image.open(file.path)
-            model.dimensions[version_key.to_sym] = {width: image[:width], height: image[:height]}
+            model.dimensions[version_key.to_s] = {width: image[:width], height: image[:height]}
             model.save
           end
 
-          return model.dimensions[version_key.to_sym]
+          return model.dimensions[version_key.to_s]
         rescue
           return {width: 0, height: 0}
         end
