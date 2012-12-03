@@ -9,14 +9,14 @@ describe MediaMagick::Image::Dimensions do
     describe "getting dimensions from original size" do
       it "should return width and height equal 0" do
         image = post.images.create
-        image.size.should eq({width: 0, height: 0})
+        image.size.should eq({"width" => 0, "height" => 0})
       end
     end
 
     describe "getting dimensions from thumb size" do
       it "should return width and height equal 0" do
         image = post.images.create
-        image.thumb.size.should eq({width: 0, height: 0})
+        image.thumb.size.should eq({"width" => 0, "height" => 0})
       end
     end
   end
@@ -26,9 +26,9 @@ describe MediaMagick::Image::Dimensions do
       let(:file) { File.open(File.expand_path("../fixtures/example.jpg", Rails.root)) }
       let!(:image) { post.images.create(image: file) }
       let(:sizes) { 
-        { "_original" => {width: 960, height: 544}, 
-          "thumb"     => {width: 240, height: 136},
-          "big"       => {width: 863, height: 489} 
+        { "_original" => {"width" => 960, "height" => 544}, 
+          "thumb"     => {"width" => 240, "height" => 136},
+          "big"       => {"width" => 863, "height" => 489} 
         } 
       }
 
