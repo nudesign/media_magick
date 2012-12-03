@@ -1,7 +1,10 @@
 # encoding: utf-8
 
+require "media_magick/image/dimensions"
+
 class PostUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  include MediaMagick::Image::Dimensions
 
   storage :file
 
@@ -9,7 +12,7 @@ class PostUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  process :resize_to_fill => [50, 50]
+  process :resize_to_fill => [80, 50]
   version :thumb do
     process :resize_to_fit => [300, 300]
   end

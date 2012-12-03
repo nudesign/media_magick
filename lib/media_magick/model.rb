@@ -44,6 +44,7 @@ module MediaMagick
           extend CarrierWave::Mount
 
           field :type, type: String, default: options[:as] || 'image'
+          field :dimensions, type: Hash, default: {}
 
           def self.create_video_methods(name)
             field :video, type: String
@@ -53,13 +54,11 @@ module MediaMagick
               super
 
               video = MediaMagick::Video::Parser.new(url)
-
               send(self.class::ATTACHMENT).store!(video.to_image) if video.valid?
             end
 
             def source(options = {})
               video = MediaMagick::Video::Parser.new(self.video)
-
               video.to_html(options) if video.valid?
             end
           end

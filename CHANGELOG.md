@@ -1,13 +1,17 @@
-## Next Release (branch: v0.2)
+## Next Release (branch: v0.3)
 
 Helpers:
 
 * `attachment_container_for_video` doesn't render resources (images or videos)
+
 * updates carrierwave (~> 0.7.0)
+
+* store image dimensions in mongodb to avoid unnecessary file reads
 
 ### Resolved Issues
 
 * #2 - video upload for attaches one relation
+
 
 ## 0.1.1 - October 11, 2012
 
