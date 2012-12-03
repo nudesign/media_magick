@@ -23,11 +23,39 @@ describe MediaMagick::Image::Dimensions do
 
   context "with image file" do
     describe "getting dimensions" do
-      it "should return width and height of file" do
-        file  = File.open(File.expand_path("../fixtures/example.jpg", Rails.root))
-        image = post.images.create(image: file)
+      let(:file) { File.open(File.expand_path("../fixtures/example.jpg", Rails.root)) }
+      let!(:image) { post.images.create(image: file) }
+      let(:sizes) { 
+        { _original: {width: 960, height: 544}, 
+          thumb:     {width: 240, height: 136},
+          big:       {width: 863, height: 489} 
+        } 
+      }
 
-        image.size.should eq({width: 80, height: 50})
+      it "should return width and height of file" do        
+        image.size.should eq(sizes[:_original])
+      end
+
+      describe "versions" do
+        it "should return width and height for thumb version" do
+          image.thumb.size.should eq(sizes[:thumb])
+        end
+
+        it "should return width and height for big version" do
+          image.big.size.should eq(sizes[:big])
+        end
+
+        describe "persistence" do
+          before do
+            image.size
+            image.thumb.size
+            image.big.size
+          end
+
+          it "should store dimenions for all versions" do
+            image.dimensions.should eq(sizes)
+          end
+        end
       end
     end
   end

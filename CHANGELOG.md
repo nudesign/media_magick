@@ -6,7 +6,7 @@ Helpers:
 
 * updates carrierwave (~> 0.7.0)
 
-* store image dimensions in mongodb to avoid unnecessary file reads
+* store image dimensions in mongodb to avoid unnecessary file reads (when call method size - lazy behaviour)
 
 ### Resolved Issues
 
