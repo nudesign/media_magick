@@ -4,14 +4,16 @@ module MediaMagick
       extend ActiveSupport::Concern
 
       def size
+        version_key = version_name.present? ? version_name : "_original"
+
         begin
-          if model.dimensions.empty?
+          if model.dimensions[version_key.to_sym].nil?
             image = MiniMagick::Image.open(file.path)
-            model.dimensions = {width: image[:width], height: image[:height]}
+            model.dimensions[version_key.to_sym] = {width: image[:width], height: image[:height]}
             model.save
           end
 
-          return model.dimensions
+          return model.dimensions[version_key.to_sym]
         rescue
           return {width: 0, height: 0}
         end
@@ -19,14 +21,3 @@ module MediaMagick
     end
   end
 end
-
-# img = MiniMagick::Image.open(self.image.small.file.path)
-# self.dimensions[style] = {:width => img[:width], :height => img[:height]}
-# self.save
-
-# begin
-#   @image ||= MiniMagick::Image.open(file.path)
-#   return @image
-# rescue
-#   return {width: 0, height: 0}
-# end
