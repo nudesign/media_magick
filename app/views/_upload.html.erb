@@ -7,6 +7,8 @@
   <a class="uploadAttachments btn" href="javascript://"><%= t('media_magick.upload') %></a>
 </div>
 
+<% if load_attachments %>
 <ul class="loadedAttachments <%= loadedAttachments[:class] %>">
   <%= render partial: partial, collection: model.send(relations), :as => :attachment, :locals => { model: nil, relation: nil } %>
 </ul>
+<% end %>
