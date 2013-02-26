@@ -13,7 +13,7 @@ module MediaMagick
         obj = params[:model].constantize.find(params[:id])
       end
 
-      if params[:video]        
+      if params[:video]
         attachment = create_video(obj, params)
       else
         attachment = obj.send(params[:relation]).create(params[:relation].singularize => params[:file])
