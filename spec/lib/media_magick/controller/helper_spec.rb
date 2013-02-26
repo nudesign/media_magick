@@ -14,9 +14,9 @@ describe MediaMagick::Controller::Helpers do
     context "document is embedded" do
       it "should get parent by params" do
         params = {
-          :embedded_in_model => "album", 
-          :embedded_in_id    => "#{album.id.to_s}", 
-          :model             => "track", 
+          :embedded_in_model => "album",
+          :embedded_in_id    => "#{album.id.to_s}",
+          :model             => "track",
           :model_id          => "#{track.id.to_s}"
         }
         controller.find_doc_by_params(params).should eq(track)
@@ -26,7 +26,7 @@ describe MediaMagick::Controller::Helpers do
     context "document is root" do
       it "should get parent by params" do
         params = {
-          :model             => "album", 
+          :model             => "album",
           :model_id          => "#{album.id.to_s}"
         }
         controller.find_doc_by_params(params).should eq(album)

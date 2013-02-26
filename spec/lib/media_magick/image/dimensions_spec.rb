@@ -25,14 +25,14 @@ describe MediaMagick::Image::Dimensions do
     describe "getting dimensions" do
       let(:file) { File.open(File.expand_path("../fixtures/example.jpg", Rails.root)) }
       let!(:image) { post.images.create(image: file) }
-      let(:sizes) { 
-        { "_original" => {"width" => 960, "height" => 544}, 
+      let(:sizes) {
+        { "_original" => {"width" => 960, "height" => 544},
           "thumb"     => {"width" => 240, "height" => 136},
-          "big"       => {"width" => 863, "height" => 489} 
-        } 
+          "big"       => {"width" => 863, "height" => 489}
+        }
       }
 
-      it "should return width and height of file" do        
+      it "should return width and height of file" do
         image.size.should eq(sizes["_original"])
       end
 

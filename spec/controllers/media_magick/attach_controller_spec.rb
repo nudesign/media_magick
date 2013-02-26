@@ -52,7 +52,7 @@ describe MediaMagick::AttachController do
           it "creates a new video" do
             user      = User.create
             video_url = 'youtube.com/watch?v=FfUHkPf9D9k'
-            
+
             post :create, { model: 'User', id: user.id, relation: 'photo_and_video', video: video_url }
 
             user.reload.photo_and_video.video.should eq(video_url)
