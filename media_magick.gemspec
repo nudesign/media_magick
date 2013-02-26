@@ -14,19 +14,15 @@ Gem::Specification.new do |gem|
   gem.name          = 'media_magick'
   gem.require_paths = ['lib']
   gem.version       = MediaMagick::VERSION
-  
+
   gem.add_dependency 'carrierwave',    '~> 0.7.0'
   gem.add_dependency 'mongoid',        '>= 2.4'
   gem.add_dependency 'plupload-rails', '~> 1.0.6'
   gem.add_dependency 'rails',          '~> 3.2.0'
-  
+
   gem.add_development_dependency 'bson_ext',    '~> 1.7.0'
   gem.add_development_dependency 'mini_magick', '~> 3.4'
   gem.add_development_dependency 'rake',        '~> 0.9'
   gem.add_development_dependency 'rspec-rails', '~> 2.12.0'
   gem.add_development_dependency 'simplecov',   '~> 0.7.0'
-
-  #gems for code analyses
-  gem.add_development_dependency 'flog', '~> 3.0.0.b2'
-  gem.add_development_dependency 'flay', '~> 2.0.0.b1'
 end
