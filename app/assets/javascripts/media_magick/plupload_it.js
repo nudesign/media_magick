@@ -18,14 +18,14 @@
 (function($) {
 
   $.fn.pluploadIt = function (options) {
-    
+
     var settings = $.extend({
       browse_button:        'pickAttachments', // triggers modal to select files
       container:            'attachmentUploader',
       drop_element:         'dropAttachments',
       flash_swf_url:        '/assets/plupload.flash.swf',
       max_file_size:        '10mb',
-      queue_element:        'attachmentQueue', 
+      queue_element:        'attachmentQueue',
       resize:               false,
       runtimes:             'gears,html5,flash,browserplus,html4',
       silverlight_xap_url:  '/assets/plupload.silverlight.xap',
@@ -39,14 +39,15 @@
 
       var $container = $(this);
       settings.container = $container.attr('id');
-      
+      var modelAndRelation = $container.data('model') + "-" + $container.data('relation');
+
       // setup unique ids from classes
       $container.find('.' + settings.browse_button).attr('id', settings.container + '-' + settings.browse_button);
       $container.find('.' + settings.drop_element).attr('id', settings.container + '-' + settings.drop_element);
       $container.find('.' + settings.queue_element).attr('id', settings.container + '-' + settings.queue_element);
       $container.find('.' + settings.target_list).attr('id', settings.container + '-' + settings.target_list);
       $container.find('.' + settings.upload_button).attr('id', settings.container + '-' + settings.upload_button);
-      
+
       var uploader = new plupload.Uploader({
         browse_button:        settings.container + '-' + settings.browse_button,
         container:            settings.container,
@@ -70,45 +71,6 @@
 
       uploader.bind('Init', function(up, params) {
         if ($('#' + settings.container + '-runtimeInfo').length > 0) $('#' + settings.container + '-runtimeInfo').text("Current runtime: " + params.runtime);
-        // if ($container.find("dt").length > 0 && $container.find("dt").text() == "") $container.find("dt").text($container.attr('id'));
-
-        var modelAndRelation = $container.data('model') + "-" + $container.data('relation');
-
-        $("#" + $container.attr("id") + " a.remove").live('click', function() {
-          var $attachment = $(this).parents('.attachment');
-          var $attachmentUploader = $(this).parents('.attachmentUploader');
-          
-          $.get('/remove', {
-            model: $container.data('model'),
-            id: $container.data('id'),
-            relation: $container.data('relation'),
-            relation_id: $attachment.data('id'),
-            embedded_in_model: $attachmentUploader.data('embedded-in-model'),
-            embedded_in_id: $attachmentUploader.data('embedded-in-id')
-          }, function(data) {
-            $attachment.remove();
-          });
-        });
-
-        $("#attachmentVideoUploader" + modelAndRelation).live('click', function() {
-          var $attachment = $(this).parents('.attachment');
-          var $attachmentUploader = $(this).parents('.attachmentUploader');
-          var $videoField = $("#attachmentVideoUploaderField" + modelAndRelation);
-
-          $.get('/upload', {
-            model: $container.data('model'),
-            id: $container.data('id'),
-            relation: $container.data('relation'),
-            relation_id: $attachment.data('id'),
-            embedded_in_model: $attachmentUploader.data('embedded-in-model'),
-            embedded_in_id: $attachmentUploader.data('embedded-in-id'),
-            partial: $container.data('partial') === undefined ? '' : $container.data('partial'),
-            video: $videoField.val()
-          }, function(data) {
-            $("#" + $container.attr("id") + "-loadedAttachments").append(data);
-            $videoField.val("");
-          });
-        });
       });
 
       $('#' + settings.container + '-' + settings.upload_button).click(function(e) {
@@ -152,7 +114,7 @@
         uploader.bind('FileUploaded', function(up, file, response) {
           $('#' + file.id).addClass('completed');
           $('#' + file.id + " span.status").html("100%");
-          $("#" + container + '-' + target_list).append(response.response);
+          $("#" + modelAndRelation + '-' + target_list).append(response.response);
         });
       })(settings.container, settings.queue_element, settings.target_list);
 
@@ -160,3 +122,44 @@
 
   };
 })(jQuery);
+
+$(function() {
+  // video upload (youtube/vimeo)
+  $('.attachmentVideoUploader').on('click', 'a.attachmentVideoUploaderButton', function(){
+    var $container  = $(this).parent(".attachmentVideoUploader");
+    var $attachment = $(this).parents('.attachment');
+    var $videoField = $container.find(".attachmentVideoUploaderField");
+    var modelAndRelation = $container.data('model') + "-" + $container.data('relation');
+
+    $.get('/upload', {
+        model: $container.data('model'),
+        id: $container.data('id'),
+        relation: $container.data('relation'),
+        relation_id: $attachment.data('id'),
+        embedded_in_model: $container.data('embedded-in-model'),
+        embedded_in_id: $container.data('embedded-in-id'),
+        partial: $container.data('partial') === undefined ? '' : $container.data('partial'),
+        video: $videoField.val()
+      }, function(data) {
+      $('#' + modelAndRelation + '-loadedAttachments').append(data);
+      $videoField.val("");
+    });
+  });
+
+  // attachment removal
+  $('.loadedAttachments').on('click', 'a.remove', function() {
+    var $container  = $(this).parents('.loadedAttachments');
+    var $attachment = $(this).parents('.attachment');
+
+    $.get('/remove', {
+      model: $container.data('model'),
+      id: $container.data('id'),
+      relation: $container.data('relation'),
+      relation_id: $attachment.data('id'),
+      embedded_in_model: $container.data('embedded-in-model'),
+      embedded_in_id: $container.data('embedded-in-id')
+    }, function(data) {
+      $attachment.remove();
+    });
+  });
+});

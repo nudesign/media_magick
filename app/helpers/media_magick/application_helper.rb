@@ -1,51 +1,58 @@
 module MediaMagick
   module ApplicationHelper
-    def attachment_container(model, relation, options = {})
-      data    = data_attributes(model, relation, options)
-      id      = "#{model.class.to_s.downcase}-#{relation.to_s}"
-      classes = "attachmentUploader #{relation.to_s}"
+    def attachment_uploader(model, relation, type, options={})
+      id       = "#{model_name(model)}-#{relation.to_s}-#{type.to_s}"
+      classes  = "attachmentUploader"
+      data     = data_attributes(model, relation, options)
+      template = "/uploader"
+
+      if type == :video
+        template = "/video_uploader"
+        classes  = "attachmentVideoUploader"
+      end
 
       content_tag :div, id: id, class: classes, data: data do
         if block_given?
           yield
         else
-          options[:load_attachments] = true unless options[:load_attachments] == false
-
-          render '/upload', partial_attributes(model, relation, options)
+          render template
         end
       end
     end
 
-    def attachment_container_for_video(model, relation, options = {})
-      data    = data_attributes(model, relation, options)
-      id      = "#{model.class.to_s.downcase}-#{relation.to_s}"
-      classes = "attachmentUploader attachmentVideoUploader #{relation.to_s}"
+    def attachment_loader(model, relation, options={})
+      id   = "#{model_name(model)}-#{relation.to_s}-loadedAttachments"
+      classes  = "loadedAttachments"
+      data = data_attributes(model, relation, options)
 
       content_tag :div, id: id, class: classes, data: data do
         if block_given?
           yield
         else
-          render '/video', partial_attributes(model, relation, options)
+          render partial:    '/loader',
+                 collection: model.send(relation),
+                 as:         :attachment,
+                 locals:     { model: nil, relation: nil }
         end
       end
+    end
+
+    def attachment_container(model, relation, options = {})
+      warn "%" * 50
+      warn "[DEPRECATION] `attachment_container` is deprecated. please use `attachment_uploader`"
+      warn "%" * 50
+    end
+
+    def attachment_container_for_video
+      warn "%" * 50
+      warn "[DEPRECATION] `attachment_container_for_video` is deprecated. please use `attachment_uploader`"
+      warn "%" * 50
     end
 
     private
-      def get_partial_name(options)
-        if options[:partial]
-          options[:partial]
-        else
-          if options[:as]
-            "/#{options[:as]}"
-          else
-            '/image'
-          end
-        end
-      end
-
       def data_attributes(model, relation, options)
         data_attributes = {
-          model:    model.class.to_s,
+          model:    model_name(model),
           id:       model.id.to_s,
           relation: relation.to_s
         }
@@ -56,17 +63,13 @@ module MediaMagick
         data_attributes
       end
 
-      def partial_attributes(model, relation, options)
-        partial_attributes = {
-          model:             model,
-          relations:         relation,
-          newAttachments:    options[:newAttachments]    || {},
-          loadedAttachments: options[:loadedAttachments] || {},
-          load_attachments:  options[:load_attachments]  || false,
-          partial:           get_partial_name(options)
-        }
+      def get_partial_name(options)
+        return options[:partial] if options[:partial]
+        '/loader'
+      end
 
-        partial_attributes
+      def model_name(model)
+        @model_name ||= model.class.to_s
       end
   end
 end

@@ -7,5 +7,5 @@ class Post
 
   attaches_many :files,  :type => 'file'
   attaches_many :images, :type => 'image', :uploader => PostUploader, :allow_videos => true
-  attaches_many :videos, :type => 'image', :uploader => PostUploader, :allow_videos => true
+  attaches_many :just_videos, :type => 'image', :uploader => PostUploader, :allow_videos => true
 end

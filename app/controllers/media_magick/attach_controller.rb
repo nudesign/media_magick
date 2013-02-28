@@ -21,7 +21,8 @@ module MediaMagick
 
       obj.save
 
-      partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
+      # partial = params[:partial].blank? ? "/#{attachment.class::TYPE}" : params[:partial]
+      partial = params[:partial].blank? ? "/loader" : params[:partial]
 
       render :partial => partial, :locals => {:model => params[:model], :relation => params[:relation], :attachment => attachment}
     end
