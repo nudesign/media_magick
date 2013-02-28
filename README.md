@@ -6,7 +6,7 @@ MediaMagick aims to make dealing with multimedia resources a very easy task – 
 
 Add this line to your application's Gemfile:
 
-    gem 'media_magick'
+    gem 'media_magick', '~> 0.3.0'
 
 And then execute:
 
@@ -30,7 +30,7 @@ class Album
   include Mongoid::Document
   include MediaMagick::Model
 
-  attaches_many :photos
+  attaches_many :photos, type: :image
 end
 ```
 
@@ -45,7 +45,8 @@ end
 ### View
 
 ``` erb
-<%= attachment_container @album, :photos %>
+<%= attachment_uploader(@album, :photos, :image) %>
+<%= attachment_loader(@album, :photos) %>
 ```
 
 ### Javascript
@@ -54,6 +55,23 @@ end
 $(document).ready(function () {
   $(".attachmentUploader").pluploadIt();
 });
+```
+
+### Allow Videos (youtube/vimeo)
+
+``` ruby
+class Album
+  include Mongoid::Document
+  include MediaMagick::Model
+
+  attaches_many :photos, type: :image, allow_videos: true
+end
+```
+
+``` erb
+<%= attachment_uploader(@album, :photos, :video) %>
+<%= attachment_uploader(@album, :photos, :image) %>
+<%= attachment_loader(@album, :photos) %>
 ```
 
 ## Configuring
@@ -142,25 +160,8 @@ album.reload.photos.first.thumb.url
 
 ### Form View
 
-``` erb
-<%= attachment_container @album, :files %>
+coming soon
 
-<%= attachment_container @album, :files, newAttachments: { class: 'thumbnails' }, loadedAttachments: { class: 'span3' } %>
-```
-
-or use a custom layout:
-
-``` html
-<%= attachment_container @album, :photos do %>
-
-  <a class="pickAttachments btn" href="javascript://">select files</a>
-  <a class="uploadAttachments btn" href="javascript://">upload files</a>
-
-  <ul class="loadedAttachments">
-    <%= render :partial => 'photos', :collection => @album.photos, :as => 'photo' %>
-  </ul>
-<% end %>
-```
 
 ## Contributing
 

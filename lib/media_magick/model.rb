@@ -8,11 +8,15 @@ module MediaMagick
     extend ActiveSupport::Concern
 
     module ClassMethods
+      # smell
       def attaches_many(name, options = {})
         attaches_block = block_given? ? Proc.new : nil
 
         name_camelcase = create_attaches_class(name, options, attaches_block) do
-          create_video_methods(name) if options[:allow_videos]
+          if options[:allow_videos]
+            raise "name 'videos' not allowed" if name.to_s == "videos"
+            create_video_methods(name)
+          end
 
           field :priority, type: Integer, default: 0
 
@@ -24,11 +28,15 @@ module MediaMagick
         embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
       end
 
+      # smell
       def attaches_one(name, options = {})
         attaches_block = block_given? ? Proc.new : nil
 
         name_camelcase = create_attaches_class(name, options, attaches_block) do
-          create_video_methods(name) if options[:allow_videos]
+          if options[:allow_videos]
+            raise "name 'video' not allowed" if name.to_s == "video"
+            create_video_methods(name)
+          end
 
           embedded_in(name)
         end

@@ -1,5 +1,26 @@
 ## Next Release (branch: v0.3)
 
+### Helpers
+
+* `attachment_container` and `attachment_container_for_video` are deprecated. please use `attachment_uploader` (for upload) and `attachment_loader` for rendering resources
+
+### Libraries
+
+* carrierwave ~> 0.8
+
+* mongoid >= 3.0
+
+* mini_magick ~> 3.5 (now is a gem dependency)
+
+* updates jquery - 1.9.1
+
+### Bugs found
+
+* attaches_many :videos - 'videos' is a reserved word
+
+
+## branch v0.3 untill 12.2012
+
 Helpers:
 
 * `attachment_container_for_video` doesn't render resources (images or videos)

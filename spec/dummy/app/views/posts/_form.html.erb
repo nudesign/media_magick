@@ -26,9 +26,9 @@
     <%- if @post.new_record? -%>
       create first
     <%- else -%>
-      <%= attachment_container_for_video(@post, :images) %>
-      <br /><br />
-      <%= attachment_container @post, :images %>
+      <%= attachment_uploader(@post, :images, :video) %>
+      <%= attachment_uploader(@post, :images, :image) %>
+      <%= attachment_loader(@post, :images) %>
     <%- end -%>
   </div>
 
@@ -37,16 +37,18 @@
     <%- if @post.new_record? -%>
       create first
     <%- else -%>
-      <%= attachment_container @post, :files, :as => "file" %>
+      <%= attachment_uploader(@post, :files, :file) %>
+      <%= attachment_loader(@post, :files) %>
     <%- end -%>
   </div>
 
   <div class="field" style="overflow: hidden;">
-    <label>just videos</label>
+  <label>just videos</label>
     <%- if @post.new_record? -%>
       create first
     <%- else -%>
-      <%= attachment_container_for_video(@post, :videos, load_attachments: true) %>      
+      <%= attachment_uploader(@post, :just_videos, :video) %>
+      <%= attachment_loader(@post, :just_videos) %>
     <%- end -%>
   </div>
 

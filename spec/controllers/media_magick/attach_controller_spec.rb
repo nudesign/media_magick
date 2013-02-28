@@ -12,7 +12,7 @@ describe MediaMagick::AttachController do
           post :create, { model: 'Album', id: album.id, relation: 'photos', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
         }.to change { album.reload.photos.count }.by(1)
 
-        response.should render_template('_image')
+        response.should render_template('_loader')
         response.body.should =~ /nu.jpg/m
       end
 
@@ -24,7 +24,7 @@ describe MediaMagick::AttachController do
           post :create, { embedded_in_id: album.id, embedded_in_model: 'Album', model: 'Track', id: track.id, relation: 'files', file: fixture_file_upload("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") }
         }.to change { track.reload.files.count }.by(1)
 
-        response.should render_template('_image')
+        response.should render_template('_loader')
         response.body.should =~ /nu.jpg/m
       end
 
@@ -43,7 +43,7 @@ describe MediaMagick::AttachController do
               post :create, { model: 'Album', id: album.id, relation: 'photos_and_videos', video: 'youtube.com/watch?v=FfUHkPf9D9k' }
             }.to change { album.reload.photos_and_videos.count }.by(1)
 
-            response.should render_template('_image')
+            response.should render_template('_loader')
             response.body.should =~ /FfUHkPf9D9k/m
           end
         end
@@ -56,7 +56,7 @@ describe MediaMagick::AttachController do
             post :create, { model: 'User', id: user.id, relation: 'photo_and_video', video: video_url }
 
             user.reload.photo_and_video.video.should eq(video_url)
-            response.should render_template('_image')
+            response.should render_template('_loader')
             response.body.should =~ /FfUHkPf9D9k/m
           end
         end
