@@ -3,33 +3,34 @@ module MediaMagick
     def attachment_uploader(model, relation, type, options={})
       id       = "#{model_name(model)}-#{relation.to_s}-#{type.to_s}"
       classes  = "attachmentUploader"
-      data     = data_attributes(model, relation, options)
-      template = "/uploader"
+      partial  = get_partial("/uploader", options)
+      data     = data_attributes(model, relation, partial, options)
 
       if type == :video
-        template = "/video_uploader"
-        classes  = "attachmentVideoUploader"
+        partial = "/video_uploader"
+        classes = "attachmentVideoUploader"
       end
 
       content_tag :div, id: id, class: classes, data: data do
         if block_given?
           yield
         else
-          render template
+          render partial
         end
       end
     end
 
     def attachment_loader(model, relation, options={})
-      id   = "#{model_name(model)}-#{relation.to_s}-loadedAttachments"
-      classes  = "loadedAttachments"
-      data = data_attributes(model, relation, options)
+      id      = "#{model_name(model)}-#{relation.to_s}-loadedAttachments"
+      classes = "loadedAttachments"
+      partial = get_partial("/loader", options)
+      data    = data_attributes(model, relation, partial, options)
 
       content_tag :div, id: id, class: classes, data: data do
         if block_given?
           yield
         else
-          render partial:    '/loader',
+          render partial:    partial,
                  collection: model.send(relation),
                  as:         :attachment,
                  locals:     { model: nil, relation: nil }
@@ -50,22 +51,22 @@ module MediaMagick
     end
 
     private
-      def data_attributes(model, relation, options)
+      def data_attributes(model, relation, partial, options)
         data_attributes = {
           model:    model_name(model),
           id:       model.id.to_s,
           relation: relation.to_s
         }
 
-        data_attributes.merge!(:partial => get_partial_name(options))
+        data_attributes.merge!(:partial => partial)
         data_attributes.merge!(:embedded_in_id => options[:embedded_in].id.to_s, :embedded_in_model => options[:embedded_in].class.to_s) if options[:embedded_in]
 
         data_attributes
       end
 
-      def get_partial_name(options)
+      def get_partial(default, options)
         return options[:partial] if options[:partial]
-        '/loader'
+        default
       end
 
       def model_name(model)
