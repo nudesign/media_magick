@@ -71,14 +71,14 @@ describe MediaMagick do
             track.stub(id: '87654321')
           end
 
-          xit 'should create a div with data-embedded-in-id and data-embedded-in-model attributes' do
-            html = conteiner_html('Track', 'files', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files', partial: '/image'})
+          it 'should create a div with data-embedded-in-id and data-embedded-in-model attributes' do
+            html = conteiner_html('Track', 'files', 'file', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files', partial: '/uploader'})
 
             helper.attachment_uploader(track, :files, :file, embedded_in: album).should eq(html)
           end
 
           xit 'should render /upload partial' do
-            helper.should_receive(:render).with('/upload', model: track, relations: :files, newAttachments: {}, loadedAttachments: {}, partial: '/image')
+            helper.should_receive(:render).with('/upload', model: track, relations: :files, newAttachments: {}, loadedAttachments: {}, partial: '/uploader')
 
             helper.attachment_container(track, :files, embedded_in: album)
           end
