@@ -39,17 +39,25 @@ describe MediaMagick do
         end
 
         context 'using partials' do
-          it 'should create a div with data-partial attributes' do
+          it 'creates a div with data-partial attribute' do
             html = conteiner_html('Album', 'photos', 'image', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'})
 
             helper.attachment_uploader(album, :photos, :image, partial: 'albums/photo').should eq(html)
           end
 
-          it 'should include partial option on data attributes' do
+          it 'creates a div with data-loader_partial attribute' do
+            attrs = { id: 12345678, model: 'Album', relation: 'photos', partial: '/uploader', loader_partial: 'custom_loader'}
+            html  = conteiner_html('Album', 'photos', 'image', attrs)
+
+            helper.attachment_uploader(album, :photos, :image, loader_partial: 'custom_loader').should eq(html)
+          end
+
+          it 'includes partial option on data attributes' do
             helper.should_receive(:render).with('albums/photo')
 
             helper.attachment_uploader(album, :photos, :image, partial: 'albums/photo')
           end
+
         end
 
         # context 'partial for images' do

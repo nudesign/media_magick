@@ -21,7 +21,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rails',          '~> 3.2.0'
   gem.add_dependency 'mini_magick',    '~> 3.5.0'
 
-  gem.add_development_dependency 'rake',        '~> 10.0.3'
-  gem.add_development_dependency 'rspec-rails', '~> 2.13.0'
-  gem.add_development_dependency 'simplecov',   '~> 0.7.0'
+  gem.add_development_dependency 'rake',         '~> 10.0.3'
+  gem.add_development_dependency 'rspec-rails',  '~> 2.13.0'
+  gem.add_development_dependency 'simplecov',    '~> 0.7.0'
+  gem.add_development_dependency 'guard-rspec',  '~> 2.4.1'
+  gem.add_development_dependency 'rb-fsevent',   '~> 0.9.0'
 end
