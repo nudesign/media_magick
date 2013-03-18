@@ -58,8 +58,9 @@ module MediaMagick
           relation: relation.to_s
         }
 
-        data_attributes.merge!(:partial => partial)
-        data_attributes.merge!(:embedded_in_id => options[:embedded_in].id.to_s, :embedded_in_model => options[:embedded_in].class.to_s) if options[:embedded_in]
+        data_attributes.merge!(partial: partial)
+        data_attributes.merge!(loader_partial: options[:loader_partial]) if options[:loader_partial]
+        data_attributes.merge!(embedded_in_id: options[:embedded_in].id.to_s, embedded_in_model: options[:embedded_in].class.to_s) if options[:embedded_in]
 
         data_attributes
       end
