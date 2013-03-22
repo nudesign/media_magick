@@ -149,18 +149,23 @@ $(function() {
 
   // attachment removal
   $('.loadedAttachments').on('click', 'a.remove', function() {
-    var $container  = $(this).parents('.loadedAttachments');
-    var $attachment = $(this).parents('.attachment');
+    var confirmation_message = $(this).data("confirmation");
+    var answer = confirm(confirmation_message);
 
-    $.get('/remove', {
-      model: $container.data('model'),
-      id: $container.data('id'),
-      relation: $container.data('relation'),
-      relation_id: $attachment.data('id'),
-      embedded_in_model: $container.data('embedded-in-model'),
-      embedded_in_id: $container.data('embedded-in-id')
-    }, function(data) {
-      $attachment.remove();
-    });
+    if(answer) {
+      var $container  = $(this).parents('.loadedAttachments');
+      var $attachment = $(this).parents('.attachment');
+
+      $.get('/remove', {
+        model: $container.data('model'),
+        id: $container.data('id'),
+        relation: $container.data('relation'),
+        relation_id: $attachment.data('id'),
+        embedded_in_model: $container.data('embedded-in-model'),
+        embedded_in_id: $container.data('embedded-in-id')
+      }, function(data) {
+        $attachment.remove();
+      });
+    }
   });
 });

@@ -8,7 +8,7 @@
     <% end %>
   <% end %>
 
-  <%= link_to t('media_magick.remove'), "javascript://", method: "delete", class: "remove btn btn-mini btn-danger", data: { confirm: t('media_magick.confirm_removal') } %>
+  <%= link_to t('media_magick.remove'), "javascript://", method: "delete", class: "remove btn btn-mini btn-danger", data: { confirmation: t('media_magick.confirm_removal') } %>
 
   <%= hidden_field_tag "#{model.parameterize}[#{relation.singularize}_ids][]", attachment.id if model && relation %>
 </li>
