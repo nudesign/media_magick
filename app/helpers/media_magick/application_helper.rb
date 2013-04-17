@@ -22,7 +22,7 @@ module MediaMagick
 
     def attachment_loader(model, relation, options={})
       id      = "#{model_name(model)}-#{relation.to_s}-loadedAttachments"
-      classes = "loadedAttachments"
+      classes = "#{relation.to_s} loadedAttachments"
       partial = get_partial("/loader", options)
       data    = data_attributes(model, relation, partial, options)
 
