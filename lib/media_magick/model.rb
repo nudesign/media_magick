@@ -87,10 +87,20 @@ module MediaMagick
         end
 
         name_camelcase = name.to_s.camelcase
-        Object.const_set "#{self}#{name_camelcase}", klass
+
+        # sets klass to a constant
+        # ProductImages = klass
+        constantize_embedded_klass(self, name_camelcase, klass)
 
         return name_camelcase
       end
+
+      def constantize_embedded_klass(klass_self, relation_name, embedded_klass)
+        parent = klass_self.parents.first # module or Object
+        embedded_klass_name = "#{klass_self.to_s.demodulize}#{relation_name}"
+        parent.const_set embedded_klass_name, embedded_klass
+      end
+
     end
   end
 end
