@@ -32,9 +32,16 @@ describe MediaMagick::Model do
     end
 
     describe "naming relations" do
-      it "should transform related compound name classes to camel case" do
+      it "transforms related compound name classes to camel case" do
         @instance.should respond_to(:compound_name_files)
         @instance.compound_name_files.build.class.should eq(AlbumCompoundNameFiles)
+      end
+
+      context "when model is inside a module" do
+        it "creates the embedded class inside model scope" do
+          product = Store::Product.new
+          product.images.build.class.should eq(Store::ProductImages)
+        end
       end
     end
 
@@ -163,5 +170,4 @@ describe MediaMagick::Model do
     end
 
   end
-
 end

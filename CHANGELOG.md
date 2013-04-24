@@ -20,6 +20,8 @@
 
 * attaches_many :videos - 'videos' is a reserved word
 
+* attachments for models inside a module [fixed]
+
 
 ## branch v0.3 untill 12.2012
 
