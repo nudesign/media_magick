@@ -59,7 +59,7 @@
           relation:           $container.data('relation'),
           model:              $container.data('model'),
           partial:            $container.data('partial') === undefined ? '' : $container.data('partial'),
-          partial:            $container.data('loader_partial') === undefined ? '' : $container.data('loader_partial'),
+          loader_partial:     $container.data('loader-partial') === undefined ? '' : $container.data('loader-partial'),
           embedded_in_model:  $container.data('embedded-in-model') === undefined ? '' : $container.data('embedded-in-model'),
           embedded_in_id:     $container.data('embedded-in-id') === undefined ? '' : $container.data('embedded-in-id')
         },

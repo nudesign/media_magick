@@ -4,7 +4,7 @@
 
 * `attachment_container` and `attachment_container_for_video` are deprecated. please use `attachment_uploader` (for upload) and `attachment_loader` for rendering resources
 
-* new option for custom partial render after upload `attachment_uploader(model, relation, type, {loader_partial: 'custom_loader'})`
+* new option for custom partial render after upload `attachment_uploader(model, relation, type, {loader_partial: 'path/to/custom_loader'})`
 
 ### Libraries
 
