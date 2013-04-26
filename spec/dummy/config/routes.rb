@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  namespace :store do
+    resources :products
+  end
+
+
   resources :posts
   resources :users
 
