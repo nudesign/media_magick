@@ -1,0 +1,34 @@
+<%= form_for(@store_product) do |f| %>
+  <% if @store_product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store_product.errors.count, "error") %> prohibited this store_product from being saved:</h2>
+
+      <ul>
+      <% @store_product.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <h3>uploads</h3>
+
+  <div class="field">
+    <label>files</label>
+    <%- if @store_product.new_record? -%>
+      create first
+    <%- else -%>
+      <%= attachment_uploader(@store_product, :images, :image) %>
+      <%= attachment_loader(@store_product, :images) %>
+    <%- end -%>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
