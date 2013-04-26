@@ -9,9 +9,18 @@ describe MediaMagick do
         album.stub(id: '12345678')
       end
 
-      def conteiner_html(model, relation, type, data_attributes, &block)
-        id = "#{model}-#{relation.to_s}-#{type.to_s}"
-        classes  = "attachmentUploader"
+      def uploader_container_html(model, relation, type, data_attributes, &block)
+        id      = "#{model}-#{relation.to_s}-#{type.to_s}"
+        classes = "attachmentUploader"
+
+        content_tag(:div, nil, id: id, class: classes, data: data_attributes) do
+          class_eval(&block) if block_given?
+        end
+      end
+
+      def loader_container_html(model, relation, data_attributes, &block)
+        id      = "#{model}-#{relation.to_s}-loadedAttachments"
+        classes = "#{relation.to_s} loadedAttachments"
 
         content_tag(:div, nil, id: id, class: classes, data: data_attributes) do
           class_eval(&block) if block_given?
@@ -33,21 +42,21 @@ describe MediaMagick do
 
         it 'should create a div with data attributes' do
           data_attributes = { id: 12345678, model: 'Album', relation: 'photos', partial: '/uploader' }
-          html = conteiner_html('Album', 'photos', 'image', data_attributes)
+          html = uploader_container_html('Album', 'photos', 'image', data_attributes)
 
           helper.attachment_uploader(album, :photos, :image).should eq(html)
         end
 
         context 'using partials' do
           it 'creates a div with data-partial attribute' do
-            html = conteiner_html('Album', 'photos', 'image', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'})
+            html = uploader_container_html('Album', 'photos', 'image', { id: 12345678, model: 'Album', relation: 'photos', partial: 'albums/photo'})
 
             helper.attachment_uploader(album, :photos, :image, partial: 'albums/photo').should eq(html)
           end
 
           it 'creates a div with data-loader_partial attribute' do
             attrs = { id: 12345678, model: 'Album', relation: 'photos', partial: '/uploader', loader_partial: 'custom_loader'}
-            html  = conteiner_html('Album', 'photos', 'image', attrs)
+            html  = uploader_container_html('Album', 'photos', 'image', attrs)
 
             helper.attachment_uploader(album, :photos, :image, loader_partial: 'custom_loader').should eq(html)
           end
@@ -62,7 +71,7 @@ describe MediaMagick do
 
         # context 'partial for images' do
         #   xit 'should create a div with data-partial attributes' do
-        #     helper.attachment_container(album, :photos, as: 'file').should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/file'}))
+        #     helper.attachment_container(album, :photos, as: 'file').should eq(uploader_container_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/file'}))
         #   end
 
         #   xit 'should include partial option on data attributes' do
@@ -80,7 +89,7 @@ describe MediaMagick do
           end
 
           it 'should create a div with data-embedded-in-id and data-embedded-in-model attributes' do
-            html = conteiner_html('Track', 'files', 'file', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files', partial: '/uploader'})
+            html = uploader_container_html('Track', 'files', 'file', { id: 87654321, model: 'Track', embedded_in_id: 12345678, embedded_in_model: 'Album', relation: 'files', partial: '/uploader'})
 
             helper.attachment_uploader(track, :files, :file, embedded_in: album).should eq(html)
           end
@@ -94,7 +103,7 @@ describe MediaMagick do
 
         context 'customizing newAttachments element' do
           xit 'should create a div with data attributes' do
-            helper.attachment_container(album, :photos, newAttachments: { class: 'thumbnails' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }))
+            helper.attachment_container(album, :photos, newAttachments: { class: 'thumbnails' }).should eq(uploader_container_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }))
           end
 
           xit 'should render /upload partial with newAttachments attributes' do
@@ -106,7 +115,7 @@ describe MediaMagick do
 
         context 'customizing loadedAttachments element' do
           xit 'should create a div with data attributes' do
-            helper.attachment_container(album, :photos, loadedAttachments: { class: 'span3' }).should eq(conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }))
+            helper.attachment_container(album, :photos, loadedAttachments: { class: 'span3' }).should eq(uploader_container_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }))
           end
 
           xit 'should render /upload partial with loadedAttachments attributes' do
@@ -119,9 +128,35 @@ describe MediaMagick do
 
       context 'with block' do
         xit 'should create a div with data attributes and content inside' do
-          expected =  conteiner_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }) { 'template here' }
+          expected =  uploader_container_html('album', 'photos', { id: 12345678, model: 'Album', relation: 'photos', partial: '/image' }) { 'template here' }
 
           helper.attachment_container(album, :photos) { 'template here' }.should eq(expected)
+        end
+      end
+
+      context 'when model is inside a module' do
+        let(:model) { Store::Product.new }
+
+        before do
+          helper.stub(:render)
+        end
+
+        describe 'uploader' do
+          it 'converts string :: to - from model name to create id attribute' do
+            data_attributes = { id: model.id.to_s, model: 'Store::Product', relation: 'images', partial: '/uploader' }
+            html = uploader_container_html('Store-Product', 'images', 'image', data_attributes)
+
+            helper.attachment_uploader(model, :images, :image).should eq(html)
+          end
+        end
+
+        describe 'loader' do
+          it 'converts string :: to - from model name to create id attribute' do
+            data_attributes = { id: model.id.to_s, model: 'Store::Product', relation: 'images', partial: '/loader' }
+            html = loader_container_html('Store-Product', :images, data_attributes)
+
+            helper.attachment_loader(model, :images).should eq(html)
+          end
         end
       end
     end
