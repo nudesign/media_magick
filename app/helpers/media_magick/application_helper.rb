@@ -1,7 +1,7 @@
 module MediaMagick
   module ApplicationHelper
     def attachment_uploader(model, relation, type, options={})
-      id       = "#{model_name_id(model)}-#{relation.to_s}-#{type.to_s}"
+      id       = "#{model_name_for_id(model)}-#{relation.to_s}-#{type.to_s}"
       classes  = "attachmentUploader"
       partial  = get_partial("/uploader", options)
       data     = data_attributes(model, relation, partial, options)
@@ -21,7 +21,7 @@ module MediaMagick
     end
 
     def attachment_loader(model, relation, options={})
-      id      = "#{model_name_id(model)}-#{relation.to_s}-loadedAttachments"
+      id      = "#{model_name_for_id(model)}-#{relation.to_s}-loadedAttachments"
       classes = "#{relation.to_s} loadedAttachments"
       partial = get_partial("/loader", options)
       data    = data_attributes(model, relation, partial, options)
@@ -74,7 +74,7 @@ module MediaMagick
         @model_name ||= model.class.to_s
       end
 
-      def model_name_id(model)
+      def model_name_for_id(model)
         model_name(model).gsub(/::/, '-')
       end
   end
