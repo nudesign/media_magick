@@ -7,6 +7,16 @@ module MediaMagick
   module Model
     extend ActiveSupport::Concern
 
+    included do
+      after_destroy :destroy_images
+    end
+
+    def destroy_images
+      # remove the images of relationship
+      lambda_remove = lambda { |image| image.destroy }
+      photos.each(&lambda_remove)
+    end
+
     module ClassMethods
       # smell
       def attaches_many(name, options = {})
@@ -53,6 +63,17 @@ module MediaMagick
 
           field :type, type: String, default: options[:as] || 'image'
           field :dimensions, type: Hash, default: {}
+
+          before_destroy :cache_store_dir
+          after_destroy :remove_directory
+
+          def cache_store_dir
+            @cache_store_dir = store_dir
+          end
+
+          def remove_directory
+            FileUtils.remove_dir("#{Rails.root}/public/#{@cache_store_dir}", force: false)
+          end
 
           def self.create_video_methods(name)
             field :video, type: String

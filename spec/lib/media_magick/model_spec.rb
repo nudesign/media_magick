@@ -131,6 +131,15 @@ describe MediaMagick::Model do
           it { subject.music.should be_a_instance_of(AmazonS3Uploader) }
         end
       end
+
+      describe 'removing images through inheritance' do
+        subject { @klass.create }
+        it 'should delete the images and directory' do
+          photo = subject.photos.create(photo: File.open("#{File.expand_path('../../..',  __FILE__)}/support/fixtures/nu.jpg") )
+          subject.destroy
+          expect(File.directory?("#{Rails.root}/public/#{photo.store_dir}")).to be_false
+        end
+      end
     end
   end
 
