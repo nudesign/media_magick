@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'mongoid',        '>= 2.7.0'
   gem.add_dependency 'plupload-rails', '~> 1.0.6'
   gem.add_dependency 'rails',          '~> 3.2.0'
-  gem.add_dependency 'mini_magick',    '~> 3.5.0'
+  gem.add_dependency 'mini_magick',    '~> 3.6.0'
 
   gem.add_development_dependency 'rake',         '~> 10.0.3'
   gem.add_development_dependency 'rspec-rails',  '~> 2.13.0'
