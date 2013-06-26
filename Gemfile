@@ -2,4 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'jquery-rails', '~> 2.2.1'
+gem 'plupload-rails', github: 'lucasrenan/plupload-rails', branch: 'rails4'
+
+gem 'jquery-rails'
