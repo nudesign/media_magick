@@ -2,6 +2,10 @@
 
 * support rails 4
 
+## 0.3.1 - July 1, 2013
+
+  * bug fix: removes image from file system after remove document
+
 ## 0.3.0 - July 1, 2013
 
 ### Helpers
