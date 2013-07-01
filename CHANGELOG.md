@@ -1,4 +1,8 @@
-## Next Release (branch: v0.3)
+## Next Release (branch: v0.4)
+
+* support rails 4
+
+## 0.3.0 - July 1, 2013
 
 ### Helpers
 
