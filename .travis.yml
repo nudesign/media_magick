@@ -8,7 +8,6 @@ notifications:
   email:
     - contato@lucasrenan.com
     - rbrancher@gmail.com
-    - tiagogodinho3@gmail.com
 
 gemfile:
   - Gemfile
