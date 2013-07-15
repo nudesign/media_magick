@@ -126,7 +126,7 @@
 
 $(function() {
   // video upload (youtube/vimeo)
-  $('.attachmentVideoUploader').on('click', 'a.attachmentVideoUploaderButton', function(){
+  $('body').on('click', '.attachmentVideoUploader a.attachmentVideoUploaderButton', function(){
     var $container  = $(this).parent(".attachmentVideoUploader");
     var $attachment = $(this).parents('.attachment');
     var $videoField = $container.find(".attachmentVideoUploaderField");
@@ -148,7 +148,7 @@ $(function() {
   });
 
   // attachment removal
-  $('.loadedAttachments').on('click', 'a.remove', function() {
+  $('body').on('click', '.loadedAttachments a.remove', function() {
     var confirmation_message = $(this).data("confirmation");
     var answer = confirm(confirmation_message);
 
