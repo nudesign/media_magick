@@ -39,7 +39,7 @@
 
       var $container = $(this);
       settings.container = $container.attr('id');
-      var modelAndRelation = $container.data('model').replace('::','-') + "-" + $container.data('relation');
+      var modelAndRelation = $container.data('model').replace(/::/g,'-') + "-" + $container.data('relation');
 
       // setup unique ids from classes
       $container.find('.' + settings.browse_button).attr('id', settings.container + '-' + settings.browse_button);
@@ -126,11 +126,11 @@
 
 $(function() {
   // video upload (youtube/vimeo)
-  $('.attachmentVideoUploader').on('click', 'a.attachmentVideoUploaderButton', function(){
+  $('body').on('click', '.attachmentVideoUploader a.attachmentVideoUploaderButton', function(){
     var $container  = $(this).parent(".attachmentVideoUploader");
     var $attachment = $(this).parents('.attachment');
     var $videoField = $container.find(".attachmentVideoUploaderField");
-    var modelAndRelation = $container.data('model').replace('::','-') + "-" + $container.data('relation');
+    var modelAndRelation = $container.data('model').replace(/::/g,'-') + "-" + $container.data('relation');
 
     $.get('/upload', {
         model: $container.data('model'),
@@ -148,7 +148,7 @@ $(function() {
   });
 
   // attachment removal
-  $('.loadedAttachments').on('click', 'a.remove', function() {
+  $('body').on('click', '.loadedAttachments a.remove', function() {
     var confirmation_message = $(this).data("confirmation");
     var answer = confirm(confirmation_message);
 

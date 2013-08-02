@@ -132,12 +132,16 @@ describe MediaMagick::Model do
         end
       end
 
-      describe 'removing images through inheritance' do
-        subject { @klass.create }
-        it 'should delete the images and directory' do
-          photo = subject.photos.create(photo: File.open("#{File.expand_path('../../..', __FILE__)}/support/fixtures/nu.jpg") )
-          subject.destroy
-          expect(File.directory?("#{Rails.root}/public/#{photo.store_dir}")).to be_false
+      context 'when user removes parent record' do
+
+        it "should remove the pictures of the system" do
+          %w[images photos files photos_and_videos pictures].each do |attaches|
+            subject = @klass.create
+            @image = subject.send(attaches).create(attaches.singularize => File.open("#{File.expand_path('../../..', __FILE__)}/support/fixtures/nu.jpg") )
+
+            subject.destroy
+            expect(File.directory?("#{Rails.root}/public/#{@image.store_dir}")).to be_false
+          end
         end
       end
     end
