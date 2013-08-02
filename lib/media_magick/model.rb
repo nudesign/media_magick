@@ -7,16 +7,6 @@ module MediaMagick
   module Model
     extend ActiveSupport::Concern
 
-    included do
-      after_destroy :destroy_images
-    end
-
-    def destroy_images
-      # remove the images of relationship
-      lambda_remove = lambda { |image| image.destroy }
-      photos.each(&lambda_remove)
-    end
-
     module ClassMethods
       # smell
       def attaches_many(name, options = {})
@@ -35,7 +25,7 @@ module MediaMagick
           embedded_in(:attachmentable, polymorphic: true)
         end
 
-        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}")
+        embeds_many(name, :as => :attachmentable, class_name: "#{self}#{name_camelcase}", cascade_callbacks: true)
       end
 
       # smell
