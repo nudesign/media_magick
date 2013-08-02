@@ -2,9 +2,13 @@
 
 * support rails 4
 
-## 0.3.1 - July 1, 2013
+## 0.3.2 - August 2, 2013
 
   * bug fix: removes image from file system after remove document
+
+  * bug fix: works after ajax load
+
+## 0.3.1 - July 1, 2013 (yanked)
 
 ## 0.3.0 - July 1, 2013
 
