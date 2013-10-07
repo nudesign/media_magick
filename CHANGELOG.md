@@ -2,6 +2,10 @@
 
 * support rails 4
 
+## 0.3.3 - October 7, 2013
+
+  * updates carrierwave - version 0.9.0
+
 ## 0.3.2 - August 2, 2013
 
   * bug fix: removes image from file system after remove document
