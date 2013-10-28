@@ -16,14 +16,14 @@ Gem::Specification.new do |gem|
   gem.version       = MediaMagick::VERSION
 
   gem.add_dependency 'carrierwave',    '~> 0.9.0'
-  gem.add_dependency 'mongoid',        '>= 2.7.0'
-  gem.add_dependency 'plupload-rails', '~> 1.0.6'
-  gem.add_dependency 'rails',          '~> 3.2.0'
+  # gem.add_dependency 'mongoid',        '>= 2.7.0'
+  gem.add_dependency 'plupload-rails', '~> 1.1.0'
+  gem.add_dependency 'rails',          '~> 4.0.0'
   gem.add_dependency 'mini_magick',    '~> 3.6.0'
 
   gem.add_development_dependency 'rake',         '~> 10.1.0'
-  gem.add_development_dependency 'rspec-rails',  '~> 2.13.2'
-  gem.add_development_dependency 'simplecov',    '~> 0.7.1'
-  gem.add_development_dependency 'guard-rspec',  '~> 3.0.2'
-  gem.add_development_dependency 'rb-fsevent',   '~> 0.9.3'
+  gem.add_development_dependency 'rspec-rails',  '~> 2.14.0'
+  gem.add_development_dependency 'simplecov',    '~> 0.7.0'
+  gem.add_development_dependency 'guard-rspec',  '~> 4.0.0'
+  gem.add_development_dependency 'rb-fsevent',   '~> 0.9.0'
 end

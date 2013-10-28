@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe MediaMagick::Image::Dimensions do
+describe "MediaMagick::Image::Dimensions" do
   let!(:post) { Post.create }
 
   context "without image file" do

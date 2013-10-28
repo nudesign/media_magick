@@ -1,19 +1,11 @@
-//= require plupload
-
-// optional, only needed if you'd like to use plupload localized
-//= require plupload/i18n/pt-br
+//= require moxie
+//= require plupload.dev
 
 // optional, but recommended. it sets generic settings like flash url, etc.
 //= require plupload.settings
 
 // optional, only if you want to use the jquery integration
 //= require jquery.plupload.queue
-
-// optional, choose the ones you'd like to use
-//= require plupload.flash
-//= require plupload.html4
-//= require plupload.html5
-//= require plupload.gears
 
 (function($) {
 
@@ -156,15 +148,31 @@ $(function() {
       var $container  = $(this).parents('.loadedAttachments');
       var $attachment = $(this).parents('.attachment');
 
-      $.get('/remove', {
-        model: $container.data('model'),
-        id: $container.data('id'),
-        relation: $container.data('relation'),
-        relation_id: $attachment.data('id'),
-        embedded_in_model: $container.data('embedded-in-model'),
-        embedded_in_id: $container.data('embedded-in-id')
-      }, function(data) {
-        $attachment.remove();
+      // $.get('/remove', {
+      //   model: $container.data('model'),
+      //   id: $container.data('id'),
+      //   relation: $container.data('relation'),
+      //   relation_id: $attachment.data('id'),
+      //   embedded_in_model: $container.data('embedded-in-model'),
+      //   embedded_in_id: $container.data('embedded-in-id')
+      // }, function(data) {
+      //   $attachment.remove();
+      // });
+
+      $.ajax({
+        type: 'DELETE',
+        url: '/remove'
+        data: {
+          model: $container.data('model'),
+          id: $container.data('id'),
+          relation: $container.data('relation'),
+          relation_id: $attachment.data('id'),
+          embedded_in_model: $container.data('embedded-in-model'),
+          embedded_in_id: $container.data('embedded-in-id')
+        },
+        success: function(data) {
+          $attachment.remove();
+        }
       });
     }
   });

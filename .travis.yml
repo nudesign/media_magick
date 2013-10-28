@@ -11,4 +11,4 @@ notifications:
 
 gemfile:
   - Gemfile
-  - gemfiles/mongoid-3.0.gemfile
+  - gemfiles/mongoid-master.gemfile
