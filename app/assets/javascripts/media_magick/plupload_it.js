@@ -124,7 +124,10 @@ $(function() {
     var $videoField = $container.find(".attachmentVideoUploaderField");
     var modelAndRelation = $container.data('model').replace(/::/g,'-') + "-" + $container.data('relation');
 
-    $.get('/upload', {
+    $.ajax({
+      type: 'POST',
+      url: '/upload',
+      data: {
         model: $container.data('model'),
         id: $container.data('id'),
         relation: $container.data('relation'),
@@ -133,9 +136,11 @@ $(function() {
         embedded_in_id: $container.data('embedded-in-id'),
         partial: $container.data('partial') === undefined ? '' : $container.data('partial'),
         video: $videoField.val()
-      }, function(data) {
-      $('#' + modelAndRelation + '-loadedAttachments').append(data);
-      $videoField.val("");
+      },
+      success: function(data) {
+        $('#' + modelAndRelation + '-loadedAttachments').append(data);
+        $videoField.val("");
+      }
     });
   });
 
@@ -148,20 +153,9 @@ $(function() {
       var $container  = $(this).parents('.loadedAttachments');
       var $attachment = $(this).parents('.attachment');
 
-      // $.get('/remove', {
-      //   model: $container.data('model'),
-      //   id: $container.data('id'),
-      //   relation: $container.data('relation'),
-      //   relation_id: $attachment.data('id'),
-      //   embedded_in_model: $container.data('embedded-in-model'),
-      //   embedded_in_id: $container.data('embedded-in-id')
-      // }, function(data) {
-      //   $attachment.remove();
-      // });
-
       $.ajax({
         type: 'DELETE',
-        url: '/remove'
+        url: '/remove',
         data: {
           model: $container.data('model'),
           id: $container.data('id'),
