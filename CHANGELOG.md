@@ -2,6 +2,10 @@
 
   * see issues - https://github.com/nudesign/media_magick/issues
 
+## 0.4.1 - October 29, 2013
+
+  * automatically requires mini_magick
+
 ## 0.4.0 - October 29, 2013
 
   * now supports just rails 4

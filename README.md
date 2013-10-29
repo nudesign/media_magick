@@ -6,7 +6,7 @@ MediaMagick aims to make dealing with multimedia resources a very easy task – 
 
 Add this line to your application's Gemfile:
 
-    gem 'media_magick', '~> 0.3.3'
+    gem 'media_magick', '~> 0.4.0'
 
 And then execute:
 
