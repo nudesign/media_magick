@@ -127,7 +127,7 @@ album.reload.photos.first.tags #=> ['ruby', 'guru']
 
 #### Custom uploader
 
-You also need to add `mini_magick` to your **Gemfile** in order to use it for thumbnail generation.
+Media Magick only supports `mini_magick`. [https://github.com/minimagick/minimagick] (https://github.com/minimagick/minimagick)
 
 ``` ruby
 class PhotoUploader < CarrierWave::Uploader::Base
