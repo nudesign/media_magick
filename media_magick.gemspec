@@ -2,8 +2,8 @@
 require File.expand_path('../lib/media_magick/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ['Lucas Renan',            'Rodrigo Brancher']
-  gem.email         = ['contato@lucasrenan.com', 'rbrancher@gmail.com']
+  gem.authors       = ['Lucas Renan',            'Rodrigo Brancher',    'Rodrigo Pestana']
+  gem.email         = ['contato@lucasrenan.com', 'rbrancher@gmail.com', 'rodrigo.pest@gmail.com']
   gem.description   = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic.}
   gem.summary       = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.}
   gem.homepage      = 'https://github.com/nudesign/media_magick'
