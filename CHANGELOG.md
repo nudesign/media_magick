@@ -1,6 +1,11 @@
-## Next Release (branch: v0.4)
+## Next Release
 
-* support rails 4
+  * see issues - https://github.com/nudesign/media_magick/issues
+
+## 0.4.0 - October 29, 2013
+
+  * now supports just rails 4
+  * bug fix - http verbs for attachment upload
 
 ## 0.3.3 - October 7, 2013
 
