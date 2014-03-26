@@ -20,7 +20,7 @@ module MediaMagick
 
           field :priority, type: Integer, default: 0
 
-          default_scope asc(:priority)
+          default_scope -> { asc(:priority) }
 
           embedded_in(:attachmentable, polymorphic: true)
         end
