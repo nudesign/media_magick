@@ -2,6 +2,10 @@
 
   * see issues - https://github.com/nudesign/media_magick/issues
 
+## 0.4.3 - April 7, 2014
+
+  * loosen rails version requirement
+
 ## 0.4.2 - March 26, 2014
 
   * define scopes with lambda, adhering to rails 4 requirements
