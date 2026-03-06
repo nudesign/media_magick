@@ -1,175 +1,86 @@
-# MediaMagick [![Build Status](https://secure.travis-ci.org/nudesign/media_magick.png?branch=master)](http://travis-ci.org/nudesign/media_magick) [![Build Status](https://gemnasium.com/nudesign/media_magick.png)](http://gemnasium.com/nudesign/media_magick) [![Code Climate](https://codeclimate.com/github/nudesign/media_magick.png)](https://codeclimate.com/github/nudesign/media_magick)
+# MediaMagick
 
-MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.
+> **⚠️ DEPRECATED — No longer maintained.**
+>
+> This gem has not been updated since April 2014 (v0.4.3) and is **incompatible with Rails 5+, CarrierWave 1+, MiniMagick 4+, and Mongoid 5+**. It will not work in any modern Rails application. See [Alternatives](#alternatives) below.
 
-## Installation
+---
 
-Add this line to your application's Gemfile:
+MediaMagick aimed to make dealing with multimedia resources easy — wrapping upload, association, and display of images, videos, and files into simple model macros for Mongoid-backed Rails apps.
 
-    gem 'media_magick', '~> 0.4.0'
+## Why it's broken
 
-And then execute:
+Several hard incompatibilities accumulated over the years:
 
-    $ bundle
+- **Rails 5+** removed `render nothing: true`, `render text:`, and `redirect_to :back` — all used internally
+- **CarrierWave 1.x** introduced breaking API changes (pinned to `~> 0.9`)
+- **MiniMagick 4.x** introduced breaking API changes (pinned to `~> 3.6`)
+- **Plupload** (the browser upload library) is largely abandoned
+- **Vimeo API v2** was shut down in 2020 — video thumbnail fetching no longer works
+- **YouTube thumbnail URLs** changed and now require HTTPS
+- All embedded iframes use `http://`, which browsers block as mixed content
 
-## Getting Started
+## Alternatives
 
-### Assets
+### If you're on ActiveRecord (PostgreSQL, MySQL, SQLite)
 
-Add these lines after `//= require jquery` in `app/assets/javascripts/application.js`:
+Use **[Active Storage](https://guides.rubyonrails.org/active_storage_overview.html)**, built into Rails since 5.2. It handles local and cloud storage (S3, GCS, Azure), image variants, and direct browser uploads with no additional gem required.
 
+```ruby
+# model
+class Album < ApplicationRecord
+  has_many_attached :photos
+end
+
+# view (with direct upload)
+<%= form.file_field :photos, multiple: true, direct_upload: true %>
 ```
-//= require media_magick/plupload_it
-//= require media_magick/toggleSortable
-```
 
-### Model
+For image processing with Active Storage, pair it with **[image_processing](https://github.com/janko/image_processing)** (libvips or ImageMagick).
 
-``` ruby
+### If you're on Mongoid (MongoDB)
+
+Active Storage does not officially support Mongoid. Your options:
+
+- **[CarrierWave 3.x](https://github.com/carrierwaveuploader/carrierwave)** with the **[carrierwave-mongoid](https://github.com/carrierwaveuploader/carrierwave-mongoid)** adapter. This is the closest spiritual successor — you write uploaders and mount them on models manually, without the macro DSL this gem provided.
+- **[Shrine](https://shrinerb.com/)** — a modern, storage-agnostic file attachment library with a Mongoid integration via the `mongoid` plugin. Actively maintained and recommended for new projects.
+
+### For the browser-side uploader
+
+Replace Plupload with one of:
+
+- **[Uppy](https://uppy.io/)** — full-featured, actively maintained, supports direct-to-S3
+- **[Filepond](https://pqina.nl/filepond/)** — lightweight and easy to integrate
+- Native `<input type="file" multiple>` with drag-and-drop is now well-supported in all browsers without a library
+
+### For video embedding (YouTube / Vimeo)
+
+The built-in `Video::Parser` is broken. Use the **oEmbed** standard instead:
+
+- YouTube: `https://www.youtube.com/oembed?url=<video_url>&format=json`
+- Vimeo: `https://vimeo.com/api/oembed.json?url=<video_url>`
+
+Both return an embed HTML snippet without scraping or proprietary APIs.
+
+---
+
+## Original Usage (archived for reference)
+
+The gem provided two model macros for Mongoid documents:
+
+```ruby
 class Album
   include Mongoid::Document
   include MediaMagick::Model
 
   attaches_many :photos, type: :image
+  attaches_one  :cover,  type: :image
 end
 ```
 
-### Controller
+This dynamically created embedded document classes with a mounted CarrierWave uploader, a `priority` field for drag-and-drop reordering, and optional video support via YouTube/Vimeo URLs.
 
-``` ruby
-def new
-  @album = Album.new
-end
-```
-
-### View
-
-``` erb
-<%= attachment_uploader(@album, :photos, :image) %>
-<%= attachment_loader(@album, :photos) %>
-```
-
-### Javascript
-
-``` javascript
-$(document).ready(function () {
-  $(".attachmentUploader").pluploadIt();
-});
-```
-
-### Allow Videos (youtube/vimeo)
-
-``` ruby
-class Album
-  include Mongoid::Document
-  include MediaMagick::Model
-
-  attaches_many :photos, type: :image, allow_videos: true
-end
-```
-
-``` erb
-<%= attachment_uploader(@album, :photos, :video) %>
-<%= attachment_uploader(@album, :photos, :image) %>
-<%= attachment_loader(@album, :photos) %>
-```
-
-## Configuring
-
-### Model
-
-``` ruby
-class Album
-  include Mongoid::Document
-  include MediaMagick::Model
-
-  attaches_many :photos, type: 'image'
-end
-
-album = Album.create
-album.photos.create(photo: params[:file])
-album.reload.photos.first.url
-album.reload.photos.first.filename
-```
-
-#### attaches One
-
-``` ruby
-class Album
-  include Mongoid::Document
-  include MediaMagick::Model
-
-  attaches_one :photo, type: 'image'
-end
-
-album = Album.create
-album.photo.create(photo: params[:file])
-album.reload.photo.url
-album.reload.photo.filename
-```
-
-#### Custom classes
-
-``` ruby
-class Album
-  include Mongoid::Document
-  include MediaMagick::Model
-
-  attaches_many :photos, type: 'image' do
-    field :tags, type: Array
-  end
-end
-
-album = Album.create
-album.photos.create(photo: params[:file], tags: ['ruby', 'guru'])
-album.reload.photos.first.tags #=> ['ruby', 'guru']
-```
-
-#### Custom uploader
-
-Media Magick only supports `mini_magick`. [https://github.com/minimagick/minimagick] (https://github.com/minimagick/minimagick)
-
-``` ruby
-class PhotoUploader < CarrierWave::Uploader::Base
-  include CarrierWave::MiniMagick
-
-  storage :file
-
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
-
-  version :thumb do
-    process :resize_to_fit => [156, 156]
-  end
-end
-```
-
-``` ruby
-class Album
-  include Mongoid::Document
-  include MediaMagick::Model
-
-  attaches_many :photos, type: 'image', uploader: PhotoUploader
-end
-
-album = Album.create
-album.photos.create(photo: params[:file])
-album.reload.photos.first.thumb.url
-```
-
-### Form View
-
-coming soon
-
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+---
 
 ## License
 
