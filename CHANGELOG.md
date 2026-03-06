@@ -1,6 +1,10 @@
-## Next Release
+## DEPRECATED - March 2026
 
-  * see issues - https://github.com/nudesign/media_magick/issues
+This gem is no longer maintained. It is incompatible with Rails 5+,
+CarrierWave 1+, MiniMagick 4+, and Mongoid 5+. The Vimeo API v2 it
+relied on was shut down in 2020.
+
+See the README for recommended alternatives.
 
 ## 0.4.3 - April 7, 2014
 

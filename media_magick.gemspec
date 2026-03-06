@@ -4,8 +4,8 @@ require File.expand_path('../lib/media_magick/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ['Lucas Renan',            'Rodrigo Brancher',    'Rodrigo Pestana']
   gem.email         = ['contato@lucasrenan.com', 'rbrancher@gmail.com', 'rodrigo.pest@gmail.com']
-  gem.description   = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic.}
-  gem.summary       = %q{MediaMagick aims to make dealing with multimedia resources a very easy task – like magic. It wraps up robust solutions for upload, associate and display images, videos, audios and files to any model in your rails app.}
+  gem.description   = %q{DEPRECATED. MediaMagick is no longer maintained and is incompatible with Rails 5+, CarrierWave 1+, MiniMagick 4+, and Mongoid 5+. See https://github.com/nudesign/media_magick for alternatives.}
+  gem.summary       = %q{DEPRECATED. See https://github.com/nudesign/media_magick for migration paths to Active Storage, CarrierWave 3.x, or Shrine.}
   gem.homepage      = 'https://github.com/nudesign/media_magick'
 
   gem.files         = `git ls-files`.split($\)
